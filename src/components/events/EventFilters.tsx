@@ -242,7 +242,7 @@ function EventFilters({
                 })
               }
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Kategorie auswählen" />
               </SelectTrigger>
 
@@ -268,7 +268,7 @@ function EventFilters({
                 })
               }
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Altersklasse auswählen" />
               </SelectTrigger>
 

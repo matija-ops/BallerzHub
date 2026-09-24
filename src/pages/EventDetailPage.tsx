@@ -233,7 +233,7 @@ function EventDetailPage() {
         >
           <span className="inline-flex items-center gap-2">
             <ArrowLeft className="size-5 shrink-0" />
-            <span>Zurück zu den Events</span>
+            <span>Zurück</span>
           </span>
         </Button>
       </main>
@@ -433,7 +433,7 @@ function EventDetailPage() {
         >
           <span className="inline-flex items-center gap-2">
             <ArrowLeft className="size-5 shrink-0" />
-            <span>Zurück zu den Events</span>
+            <span>Zurück</span>
           </span>
         </Button>
 

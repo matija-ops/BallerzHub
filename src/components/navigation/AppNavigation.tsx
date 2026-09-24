@@ -132,7 +132,7 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
   return (
     <>
       {!isOpen && (
-        <div className="absolute top-4 left-4 z-1100">
+        <div className="fixed top-4 left-4 z-1100">
           <NavigationTrigger onClick={() => onOpenChange(true)} />
         </div>
       )}
