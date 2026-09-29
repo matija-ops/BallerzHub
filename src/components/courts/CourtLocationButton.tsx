@@ -13,10 +13,13 @@ export function CourtLocationButton({
   return (
     <Button
       type="button"
-      onClick={onLocate}
+      onClick={(event) => {
+        event.preventDefault();
+        onLocate();
+      }}
       disabled={isLocating}
-      aria-label="Meinen Standorf anzeigen"
-      className="1-11 gb-white flex h-8 w-8 items-center justify-center rounded-md bg-blue-400 transition disabled:cursor-not-allowed disabled:opacity-60"
+      aria-label="Meinen Standort anzeigen"
+      className="flex h-11 w-11 touch-manipulation items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
     >
       <LocateFixed className={`h-5 w-5${isLocating ? "animate-pulse" : ""}`} />
     </Button>

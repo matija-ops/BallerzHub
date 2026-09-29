@@ -1,3 +1,4 @@
+import { SocialAuthButtons } from "@/components/auth/SocialAuthButtons";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -106,6 +107,7 @@ function LoginPage() {
         </CardHeader>
 
         <CardContent>
+          {/* <SocialAuthButtons disabled={isLoading} /> */}
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">E-Mail</Label>

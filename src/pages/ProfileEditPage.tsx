@@ -445,7 +445,7 @@ function ProfileEditPage() {
             >
               <span className="inline-flex items-center gap-2">
                 <ArrowLeft className="size-5 shrink-0" />
-                <span>Zurück zum Profil</span>
+                <span>Zurück</span>
               </span>
             </Button>
           </CardContent>
@@ -466,7 +466,7 @@ function ProfileEditPage() {
       >
         <span className="inline-flex items-center gap-2">
           <ArrowLeft className="size-5 shrink-0" />
-          <span>Zurück zum Profil</span>
+          <span>Zurück</span>
         </span>
       </Button>
 

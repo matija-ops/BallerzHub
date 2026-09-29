@@ -4,6 +4,7 @@ import { supabase } from "@/lib/supabase";
 import type { TablesInsert } from "@/types/supabase.types";
 
 const STORAGE_BUCKET = "court_proposals";
+const MAX_COURT_MEDIA = 5;
 
 export function useCourtProposals() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,7 +42,14 @@ export function useCourtProposals() {
           throw new Error("Bitte gib einen Namen für den Court ein.");
         }
 
-        if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+        if (
+          !Number.isFinite(latitude) ||
+          !Number.isFinite(longitude) ||
+          latitude < -90 ||
+          latitude > 90 ||
+          longitude < -180 ||
+          longitude > 180
+        ) {
           throw new Error("Bitte wähle einen gültigen Standort aus.");
         }
 
@@ -55,6 +63,20 @@ export function useCourtProposals() {
 
         if (!description.trim()) {
           throw new Error("Bitte beschreibe den Court.");
+        }
+
+        if (images.length > MAX_COURT_MEDIA) {
+          throw new Error("Du kannst maximal 5 Medien hochladen.");
+        }
+
+        if (
+          images.some(
+            (image) =>
+              !(image instanceof File) ||
+              (!image.type.startsWith("image/") && !image.type.startsWith("video/"))
+          )
+        ) {
+          throw new Error("Bitte lade ausschließlich Bilder oder Videos hoch.");
         }
 
         const proposal: TablesInsert<"court_proposals"> = {
@@ -89,7 +111,10 @@ export function useCourtProposals() {
             const extension =
               image.name.split(".").pop()?.toLowerCase() || "jpg";
 
-            const filePath = `court-proposals/${createdProposal.id}/${crypto.randomUUID()}.${extension}`;
+            const mediaType = image.type.startsWith("video/")
+              ? "video"
+              : "image";
+            const filePath = `proposals/${createdProposal.id}/${user.id}/${crypto.randomUUID()}.${extension}`;
 
             const { error: uploadError } = await supabase.storage
               .from(STORAGE_BUCKET)
@@ -109,6 +134,8 @@ export function useCourtProposals() {
             imageRows.push({
               proposal_id: createdProposal.id,
               image_url: publicUrl,
+              media_type: mediaType,
+              user_id: user.id,
             });
           }
 

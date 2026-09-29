@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Tables } from "@/lib/supabase";
+import type { Tables } from "@/types/supabase.types";
 import { supabase } from "@/lib/supabase";
 
 type League = Tables<"leagues">;
@@ -29,6 +29,7 @@ export function useLeagueDetail(
       return;
     }
 
+    const currentLeagueId = leagueId;
     let isMounted = true;
 
     async function fetchLeagueDetail() {
@@ -36,12 +37,12 @@ export function useLeagueDetail(
       setError(null);
 
       const [leagueResult, teamsResult] = await Promise.all([
-        supabase.from("leagues").select("*").eq("id", leagueId).single(),
+        supabase.from("leagues").select("*").eq("id", currentLeagueId).single(),
 
         supabase
           .from("teams")
           .select("*")
-          .eq("league_id", leagueId)
+          .eq("league_id", currentLeagueId)
           .order("name", { ascending: true }),
       ]);
 

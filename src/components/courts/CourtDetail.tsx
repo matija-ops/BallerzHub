@@ -3,8 +3,11 @@ import {
   Accessibility,
   AlertTriangle,
   ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
   CircleCheck,
   CircleX,
+  ImagePlus,
   Lightbulb,
   MapPin,
   Users,
@@ -12,11 +15,19 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { DirectionsButton } from "@/components/courts/DirectionsButton";
 import { CourtActions } from "@/components/courts/CourtActions";
 import CourtReviews from "@/components/courts/CourtReviews";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useCourt } from "@/hooks/courts/useCourt";
 
 interface CourtDetailProps {
@@ -44,6 +55,8 @@ function CourtDetail({ courtId }: CourtDetailProps) {
   const navigate = useNavigate();
 
   const [checkinAuthError, setCheckinAuthError] = useState<string | null>(null);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const {
     court,
@@ -73,6 +86,10 @@ function CourtDetail({ courtId }: CourtDetailProps) {
     updateReview,
     deleteReview,
 
+    isImageUploading,
+    imageUploadError,
+    uploadCourtImages,
+
     isLoading,
     error,
     refetch,
@@ -100,7 +117,8 @@ function CourtDetail({ courtId }: CourtDetailProps) {
           variant="outline"
           onClick={() => navigate("/courts")}
         >
-          Zurück zu den Courts
+          <ArrowLeft className="size-5 shrink-0" />
+          <span>Zurück</span>
         </Button>
       </main>
     );
@@ -112,7 +130,8 @@ function CourtDetail({ courtId }: CourtDetailProps) {
         <p>Dieser Court wurde nicht gefunden.</p>
 
         <Button type="button" onClick={() => navigate("/courts")}>
-          Zurück zu den Courts
+          <ArrowLeft className="size-5 shrink-0" />
+          <span>Zurück</span>
         </Button>
       </main>
     );
@@ -146,6 +165,23 @@ function CourtDetail({ courtId }: CourtDetailProps) {
 
   const StatusIcon = currentStatus.icon;
 
+  const remainingImageSlots = 5 - images.length;
+
+
+  const handleImageSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []);
+    setSelectedImages(files.slice(0, Math.max(remainingImageSlots, 0)));
+    event.target.value = "";
+  };
+
+  const handleImageUpload = async () => {
+    const uploaded = await uploadCourtImages(selectedImages);
+
+    if (uploaded) {
+      setSelectedImages([]);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-background">
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 p-4">
@@ -157,7 +193,7 @@ function CourtDetail({ courtId }: CourtDetailProps) {
           >
             <Link to="/courts" className="inline-flex items-center gap-2">
               <ArrowLeft className="size-5 shrink-0" />
-              <span>Zurück zur Map</span>
+              <span>Zurück</span>
             </Link>
           </Button>
         </div>
@@ -167,18 +203,138 @@ function CourtDetail({ courtId }: CourtDetailProps) {
             aria-label="Court-Bilder"
             className="overflow-hidden rounded-xl"
           >
-            <div className="flex gap-3 overflow-x-auto">
-              {images.map((image) => (
+            <Dialog>
+              <div className="flex gap-3 overflow-x-auto">
+                {images.map((image, index) => (
+                  <DialogTrigger
+                    key={image.id}
+                    onClick={() => setActiveImageIndex(index)}
+                    className="h-64 min-w-[85%] shrink-0 cursor-zoom-in overflow-hidden rounded-xl focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
+                    aria-label={`Bild ${index + 1} von ${court.name} vergrößern`}
+                  >
+                    <img
+                      src={image.image_url}
+                      alt={`${court.name} – Bild ${index + 1}`}
+                      className="h-full w-full object-cover"
+                    />
+                  </DialogTrigger>
+                ))}
+              </div>
+              <DialogContent
+                className="w-[95vw] max-w-[95vw] p-2 pt-10 sm:max-w-5xl"
+                aria-describedby={undefined}
+                onKeyDown={(event) => {
+                  if (images.length < 2) return;
+                  if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+                    event.preventDefault();
+                    const direction = event.key === "ArrowLeft" ? -1 : 1;
+                    setActiveImageIndex(
+                      (current) => (current + direction + images.length) % images.length
+                    );
+                  }
+                }}
+              >
+                <DialogTitle className="sr-only">
+                  {court.name} – Bilder
+                </DialogTitle>
                 <img
-                  key={image.id}
-                  src={image.image_url}
-                  alt={court.name}
-                  className="h-64 min-w-[85%] rounded-xl object-cover"
+                  src={(images[activeImageIndex] ?? images[0]).image_url}
+                  alt={`${court.name} – Bild ${activeImageIndex + 1}`}
+                  className="max-h-[70dvh] w-full rounded-lg object-contain"
                 />
-              ))}
-            </div>
+                {images.length > 1 && (
+                  <div className="flex items-center justify-center gap-4 pb-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      aria-label="Vorheriges Bild"
+                      onClick={() => setActiveImageIndex(
+                        (current) => (current - 1 + images.length) % images.length
+                      )}
+                    >
+                      <ChevronLeft />
+                    </Button>
+                    <span className="text-sm tabular-nums" aria-live="polite" aria-atomic="true">
+                      {activeImageIndex + 1} von {images.length}
+                    </span>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      aria-label="Nächstes Bild"
+                      onClick={() => setActiveImageIndex(
+                        (current) => (current + 1) % images.length
+                      )}
+                    >
+                      <ChevronRight />
+                    </Button>
+                  </div>
+                )}
+              </DialogContent>
+            </Dialog>
           </section>
         )}
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <ImagePlus className="h-5 w-5" />
+              Court-Bilder hinzufügen
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Teile Fotos des Courts mit der Community. Maximal 5 Bilder pro
+              Court ({images.length}/5).
+            </p>
+
+            {remainingImageSlots > 0 ? (
+              <>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageSelection}
+                  disabled={!currentUserId || isImageUploading}
+                />
+
+                {selectedImages.length > 0 && (
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-sm text-muted-foreground">
+                      {selectedImages.length} Bild
+                      {selectedImages.length === 1 ? "" : "er"} ausgewählt
+                    </p>
+                    <Button
+                      type="button"
+                      onClick={() => void handleImageUpload()}
+                      disabled={isImageUploading}
+                    >
+                      {isImageUploading ? "Wird hochgeladen …" : "Hochladen"}
+                    </Button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Die maximale Anzahl von 5 Bildern wurde erreicht.
+              </p>
+            )}
+
+            {!currentUserId && (
+              <p className="text-sm text-muted-foreground">
+                Melde dich an, um Bilder hochzuladen.
+              </p>
+            )}
+
+            {imageUploadError && (
+              <p className="text-sm text-destructive" role="alert">
+                {imageUploadError}
+              </p>
+            )}
+          </CardContent>
+        </Card>
 
         <section>
           <div className="flex items-start justify-between gap-4">
@@ -192,6 +348,12 @@ function CourtDetail({ courtId }: CourtDetailProps) {
                   {court.latitude}, {court.longitude}
                 </span>
               </div>
+
+              <DirectionsButton
+                latitude={court.latitude}
+                longitude={court.longitude}
+                className="mt-4"
+              />
             </div>
 
             <Badge

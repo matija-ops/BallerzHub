@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import type { Tables } from "@/lib/supabase";
+import type { Tables } from "@/types/supabase.types";
 import { supabase } from "@/lib/supabase";
 
 type Game = Tables<"games">;
@@ -35,6 +35,7 @@ export function useLeagueGames(
       return;
     }
 
+    const currentLeagueId = leagueId;
     let isMounted = true;
 
     async function fetchGames() {
@@ -44,7 +45,7 @@ export function useLeagueGames(
       const { data, error: supabaseError } = await supabase
         .from("games")
         .select("*")
-        .eq("league_id", leagueId)
+        .eq("league_id", currentLeagueId)
         .order("game_date", { ascending: true });
 
       if (!isMounted) return;

@@ -77,7 +77,7 @@ function CourtsPage() {
   }
 
   return (
-    <main className="relative h-screen w-full overflow-hidden">
+    <main className="relative -mt-16 h-[100dvh] w-full overflow-hidden">
       <CourtMap
         courts={courts}
         selectedCourt={selectedCourt}
@@ -89,7 +89,7 @@ function CourtsPage() {
         onSelectLocation={handleSelectProposalLocation}
       />
 
-      <div className="fixed top-0 right-0 left-0 z-[1000] flex items-center gap-2 bg-background/85 [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)] p-4 pb-20 sm:justify-center sm:gap-4">
+      <div className="fixed top-0 right-0 left-0 z-[1000] flex items-center gap-2 bg-background/60 [mask-image:linear-gradient(to_bottom,black_45%,transparent_100%)] p-4 pb-16 sm:justify-center sm:gap-4">
         <div className="w-12 shrink-0 sm:hidden" />
 
         <div className="min-w-0 flex-1 sm:flex-none">

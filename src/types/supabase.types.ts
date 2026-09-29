@@ -290,18 +290,24 @@ export type Database = {
           created_at: string | null;
           id: string;
           image_url: string;
+          media_type: "image" | "video";
+          user_id: string | null;
         };
         Insert: {
           court_id: string;
           created_at?: string | null;
           id?: string;
           image_url: string;
+          media_type?: "image" | "video";
+          user_id?: string | null;
         };
         Update: {
           court_id?: string;
           created_at?: string | null;
           id?: string;
           image_url?: string;
+          media_type?: "image" | "video";
+          user_id?: string | null;
         };
         Relationships: [
           {
@@ -311,6 +317,13 @@ export type Database = {
             referencedRelation: "courts";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "court_images_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
         ];
       };
       court_proposal_images: {
@@ -318,19 +331,25 @@ export type Database = {
           created_at: string | null;
           id: string;
           image_url: string;
+          media_type: "image" | "video";
           proposal_id: string;
+          user_id: string | null;
         };
         Insert: {
           created_at?: string | null;
           id?: string;
           image_url: string;
+          media_type?: "image" | "video";
           proposal_id: string;
+          user_id?: string | null;
         };
         Update: {
           created_at?: string | null;
           id?: string;
           image_url?: string;
+          media_type?: "image" | "video";
           proposal_id?: string;
+          user_id?: string | null;
         };
         Relationships: [
           {
@@ -338,6 +357,13 @@ export type Database = {
             columns: ["proposal_id"];
             isOneToOne: false;
             referencedRelation: "court_proposals";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "court_proposal_images_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
         ];

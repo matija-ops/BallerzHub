@@ -144,8 +144,25 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
           className="w-[85vw] max-w-sm gap-0 p-0"
         >
           <SheetHeader className="relative border-b px-5 py-5 pr-14 text-left">
-            <SheetTitle className="text-xl font-bold tracking-tight">
-              BALLHUB
+            <SheetTitle className="flex items-center gap-3 text-xl font-bold tracking-tight">
+              BallerzHub
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 48 52"
+                className="h-12 w-11 shrink-0 overflow-visible"
+              >
+                <ellipse className="brand-ball-shadow" cx="24" cy="48" rx="13" ry="3" fill="currentColor" opacity="0.18" />
+                <g className="brand-ball-bounce">
+                  <g>
+                    <circle cx="24" cy="27" r="17" fill="#ff852b" stroke="#382014" strokeWidth="2.5" />
+                    <path d="M12 38a17 17 0 0 0 27-19 17 17 0 0 1-27 19" fill="#e85c12" />
+                    <g fill="none" stroke="#382014" strokeWidth="2" strokeLinecap="round">
+                      <path d="M23 10c-11 5-16 23-7 32M7.2 28c9 3 24 3 33.5-2M9 19c-1 11 8 9 17 2 5-4 9-6 12-5M10 36c6-6 17 10 26 3" />
+                    </g>
+                    <path d="M14 20q2-5 7-6" fill="none" stroke="#ffe0a3" strokeWidth="3" strokeLinecap="round" />
+                  </g>
+                </g>
+              </svg>
             </SheetTitle>
 
             <SheetClose

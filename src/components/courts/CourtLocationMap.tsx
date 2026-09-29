@@ -1,8 +1,10 @@
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, Popup } from "react-leaflet";
 import type { LatLngExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 import type { Tables } from "@/types/supabase.types";
+import { BasketballMapLayer } from "./BasketballMapLayer";
+import { courtPinIcon } from "./courtPinIcon";
 
 type Court = Tables<"courts">;
 
@@ -20,13 +22,12 @@ function CourtLocationMap({ court }: CourtLocationMapProps) {
         zoom={16}
         scrollWheelZoom={false}
         className="h-full w-full"
+        style={{ zIndex: 0 }}
+        zoomControl={false}
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <BasketballMapLayer />
 
-        <Marker position={position}>
+        <Marker position={position} icon={courtPinIcon}>
           <Popup>{court.name}</Popup>
         </Marker>
       </MapContainer>

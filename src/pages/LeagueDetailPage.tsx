@@ -1,113 +1,141 @@
 import { ArrowLeft, Plus, Pencil } from "lucide-react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import GameCard from "@/components/games/GameCard";
 import StandingsTable from "@/components/standings/StandingsTable";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useLeagueGames } from "@/hooks/games/useLeagueGames";
+import { useLeagueGames, type LeagueGame } from "@/hooks/games/useLeagueGames";
 import { useLeagueDetail } from "@/hooks/leagues/useLeagueDetail";
 import { useLeagueStandings } from "@/hooks/standings/useLeagueStandings";
+
+import { useState } from "react";
+import { createLeaguePreview } from "@/lib/league-preview";
 
 function LeagueDetailPage() {
   const { leagueId } = useParams<{ leagueId: string }>();
   const navigate = useNavigate();
-
+  const [showDemo, setShowDemo] = useState(true);
   const {
     league,
     teams,
     isLoading: leagueLoading,
     error: leagueError,
   } = useLeagueDetail(leagueId);
-
   const {
     upcomingGames,
     pastGames,
     isLoading: gamesLoading,
     error: gamesError,
   } = useLeagueGames(leagueId);
-
   const {
     standings,
     isLoading: standingsLoading,
     error: standingsError,
   } = useLeagueStandings(leagueId);
+  const backButton = (
+    <Button
+      type="button"
+      variant="ghost"
+      className="text-primary hover:bg-primary/10"
+      onClick={() => navigate(-1)}
+    >
+      <ArrowLeft /> Zurück
+    </Button>
+  );
 
-  if (leagueLoading) {
+  if (leagueLoading)
     return (
-      <main className="container mx-auto px-4 py-6">
-        <Skeleton className="mb-6 h-10 w-48" />
-
+      <main className="container mx-auto space-y-6 px-4 py-6">
+        {backButton}
         <Skeleton className="h-12 w-72" />
-
-        <div className="mt-4 flex flex-wrap gap-6">
-          <Skeleton className="h-6 w-40" />
-          <Skeleton className="h-6 w-40" />
-          <Skeleton className="h-6 w-40" />
-        </div>
-
-        <section className="mt-8">
-          <Skeleton className="h-8 w-48" />
-
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <Card key={index}>
-                <CardContent className="p-6">
-                  <Skeleton className="h-6 w-2/3" />
-                  <Skeleton className="mt-2 h-5 w-1/3" />
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
+        <Skeleton className="h-64 w-full" />
       </main>
     );
-  }
-
-  if (leagueError || !league) {
+  if (leagueError || !league)
     return (
       <main className="container mx-auto px-4 py-6">
-        <Card>
-          <CardContent className="p-6">
-            <h1 className="text-lg font-semibold">
-              Liga konnte nicht geladen werden
-            </h1>
+        {backButton}
+        <p role="alert">{leagueError ?? "Liga nicht gefunden."}</p>
+      </main>
+    );
 
-            <p className="mt-2 text-sm text-muted-foreground">
-              {leagueError ?? "Die Liga wurde nicht gefunden."}
-            </p>
+  const preview = createLeaguePreview(teams, league.id);
+  const displayedPast = showDemo ? preview.past : pastGames;
+  const displayedUpcoming = showDemo ? preview.upcoming : upcomingGames;
+  const tableRows = showDemo
+    ? preview.standings
+    : [
+        ...standings,
+        ...teams
+          .filter((team) => !standings.some((row) => row.team_id === team.id))
+          .map((team, index) => ({
+            id: `unranked-${team.id}`,
+            league_id: league.id,
+            team_id: team.id,
+            team,
+            position: standings.length + index + 1,
+            games_played: 0,
+            wins: 0,
+            losses: 0,
+            points: 0,
+            created_at: null,
+            updated_at: null,
+          })),
+      ];
 
-            <Button
-              asChild
-              className="w-full shrink-0 bg-orange-500 text-white hover:bg-orange-600 sm:w-auto"
-            >
-              <Link
-                to={`/leagues/${league.id}/games/${game.id}/edit`}
-                className="flex items-center justify-center gap-2"
-              >
-                <Pencil className="size-4 shrink-0" />
-                <span>Bearbeiten</span>
-              </Link>
-            </Button>
+  function gameList(games: LeagueGame[], upcoming: boolean) {
+    if (!showDemo && gamesLoading)
+      return <Skeleton className="mt-4 h-40 w-full" />;
+    if (!showDemo && gamesError)
+      return (
+        <p role="alert" className="mt-4 text-destructive">
+          {gamesError}
+        </p>
+      );
+    if (!games.length)
+      return (
+        <Card className="mt-4">
+          <CardContent className="p-6 text-muted-foreground">
+            {showDemo
+              ? "Für Beispielspiele werden mindestens zwei Teams benötigt."
+              : upcoming
+                ? "Keine kommenden Spiele vorhanden."
+                : "Keine letzten Ergebnisse vorhanden."}
           </CardContent>
         </Card>
-      </main>
+      );
+    return (
+      <div className="mt-4 space-y-3">
+        {games.map((game) => (
+          <div
+            key={game.id}
+            className="flex flex-col gap-2 sm:flex-row sm:items-center"
+          >
+            <div className="min-w-0 flex-1">
+              <GameCard game={game} upcoming={upcoming} />
+            </div>
+            {!showDemo && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() =>
+                  navigate(`/leagues/${leagueId}/games/${game.id}/edit`)
+                }
+              >
+                <Pencil /> Bearbeiten
+              </Button>
+            )}
+          </div>
+        ))}
+      </div>
     );
   }
 
   return (
     <main className="container mx-auto px-4 py-6">
-      <Button
-        type="button"
-        variant="ghost"
-        className="text-orange-500 hover:bg-transparent hover:text-orange-400"
-        onClick={() => navigate(-1)}
-      >
-        <ArrowLeft className="size-5 shrink-0" />
-        <span>Zurück</span>
-      </Button>
-
+      {backButton}
       {/* Liga-Informationen */}
       <section className="mt-4">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -146,200 +174,69 @@ function LeagueDetailPage() {
         </div>
       </section>
 
-      {/* Mannschaften */}
-      <section className="mt-8">
-        <h2 className="text-2xl font-semibold tracking-tight">Mannschaften</h2>
-
-        {teams.length === 0 ? (
-          <Card className="mt-4">
-            <CardContent className="p-6">
-              <h3 className="font-semibold">Keine Mannschaften vorhanden</h3>
-
-              <p className="mt-1 text-sm text-muted-foreground">
-                Für diese Liga wurden noch keine Mannschaften hinterlegt.
-              </p>
-            </CardContent>
-          </Card>
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/30 bg-primary/5 p-4">
+        <div>
+          <p className="font-semibold">
+            {showDemo ? "Demo-Vorschau" : "Gespeicherte Ligadaten"}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {showDemo
+              ? "Beispielergebnisse und Termine mit den vorhandenen Teams. Es werden keine Daten gespeichert."
+              : "Teams ohne Tabellenstand werden mit 0 Spielen angezeigt."}
+          </p>
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          aria-pressed={showDemo}
+          onClick={() => setShowDemo(!showDemo)}
+        >
+          {showDemo ? "Echte Daten anzeigen" : "Beispieldaten anzeigen"}
+        </Button>
+      </div>
+      <section className="mt-8" aria-labelledby="results-title">
+        <h2 id="results-title" className="text-2xl font-semibold">
+          Letzte Spiele & Ergebnisse
+        </h2>
+        {gameList(displayedPast, false)}
+      </section>
+      <section className="mt-10" aria-labelledby="standings-title">
+        <h2 id="standings-title" className="text-2xl font-semibold">
+          Tabelle
+        </h2>
+        {!showDemo && standingsLoading ? (
+          <Skeleton className="mt-4 h-64 w-full" />
+        ) : !showDemo && standingsError ? (
+          <p role="alert" className="mt-4 text-destructive">
+            {standingsError}
+          </p>
+        ) : tableRows.length ? (
+          <>
+            <StandingsTable standings={tableRows} />
+            <p className="mt-3 text-xs text-muted-foreground">
+              Sp. = Spiele · S = Siege · N = Niederlagen · Pkt. = Punkte
+              {showDemo ? " · Demo: 2 Punkte pro Sieg" : ""}
+            </p>
+          </>
         ) : (
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {teams.map((team) => (
-              <Link
-                key={team.id}
-                to={`/clubs/${team.club_id}/teams/${team.id}`}
-                className="block h-full"
-              >
-                <Card className="h-full transition-colors hover:bg-muted/50">
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold">{team.name}</h3>
-
-                    <p className="mt-1 text-muted-foreground">
-                      {team.age_group}
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
+          <p className="mt-4 text-muted-foreground">
+            Keine Mannschaften vorhanden.
+          </p>
         )}
       </section>
-
-      {/* Spielplan & Ergebnisse */}
-      <section className="mt-10">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-2xl font-semibold tracking-tight">
-            Spielplan & Ergebnisse
+      <section className="mt-10" aria-labelledby="upcoming-title">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 id="upcoming-title" className="text-2xl font-semibold">
+            Kommende Spiele
           </h2>
-
-          <Button asChild className="w-full whitespace-nowrap sm:w-auto">
-            <Link
-              to={`/leagues/${league.id}/games/create`}
-              className="flex items-center justify-center gap-2"
-            >
-              <Plus className="size-4 shrink-0" />
-              <span>Spiel hinzufügen</span>
-            </Link>
+          <Button
+            type="button"
+            onClick={() => navigate(`/leagues/${league.id}/games/create`)}
+          >
+            <Plus /> Spiel hinzufügen
           </Button>
         </div>
-
-        {gamesLoading ? (
-          <div className="mt-4 space-y-4">
-            {Array.from({ length: 2 }).map((_, index) => (
-              <Card key={index}>
-                <CardContent className="p-5">
-                  <Skeleton className="h-5 w-1/3" />
-                  <Skeleton className="mt-4 h-6 w-full" />
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : gamesError ? (
-          <Card className="mt-4">
-            <CardContent className="p-6">
-              <h3 className="font-semibold">
-                Spiele konnten nicht geladen werden
-              </h3>
-
-              <p className="mt-2 text-sm text-destructive">{gamesError}</p>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="mt-6 space-y-8">
-            {/* Kommende Spiele */}
-            <section>
-              <h3 className="text-lg font-semibold">Kommende Spiele</h3>
-
-              {upcomingGames.length === 0 ? (
-                <Card className="mt-3">
-                  <CardContent className="p-6">
-                    <p className="text-sm text-muted-foreground">
-                      Keine kommenden Spiele vorhanden.
-                    </p>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="mt-3 space-y-3">
-                  {upcomingGames.map((game) => (
-                    <div
-                      key={game.id}
-                      className="flex flex-col gap-3 sm:flex-row sm:items-stretch"
-                    >
-                      <div className="min-w-0 flex-1">
-                        <GameCard game={game} />
-                      </div>
-
-                      <Button asChild className="w-full shrink-0 sm:w-auto">
-                        <Link
-                          to={`/leagues/${league.id}/games/${game.id}/edit`}
-                          className="flex w-full items-center justify-center gap-2"
-                        >
-                          <Pencil className="size-4 shrink-0" />
-                          <span>Bearbeiten</span>
-                        </Link>
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </section>
-
-            {/* Vergangene Spiele */}
-            <section>
-              <h3 className="text-lg font-semibold">Vergangene Spiele</h3>
-
-              {pastGames.length === 0 ? (
-                <Card className="mt-3">
-                  <CardContent className="p-6">
-                    <p className="text-sm text-muted-foreground">
-                      Keine vergangenen Spiele vorhanden.
-                    </p>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="mt-3 space-y-3">
-                  {pastGames.map((game) => (
-                    <div
-                      key={game.id}
-                      className="flex flex-col gap-3 sm:flex-row sm:items-stretch"
-                    >
-                      <div className="min-w-0 flex-1">
-                        <GameCard game={game} />
-                      </div>
-
-                      <Button asChild className="w-full shrink-0 sm:w-auto">
-                        <Link
-                          to={`/leagues/${league.id}/games/${game.id}/edit`}
-                          className="flex w-full items-center justify-center gap-2"
-                        >
-                          <Pencil className="size-4 shrink-0" />
-                          <span>Bearbeiten</span>
-                        </Link>
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </section>
-          </div>
-        )}
-      </section>
-
-      {/* Tabellenstand */}
-      <section className="mt-10">
-        <h2 className="text-2xl font-semibold tracking-tight">Tabelle</h2>
-
-        {standingsLoading ? (
-          <Card className="mt-4">
-            <CardContent className="p-6">
-              <div className="space-y-3">
-                {Array.from({ length: 4 }).map((_, index) => (
-                  <Skeleton key={index} className="h-5 w-full" />
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ) : standingsError ? (
-          <Card className="mt-4">
-            <CardContent className="p-6">
-              <h3 className="font-semibold">
-                Tabelle konnte nicht geladen werden
-              </h3>
-
-              <p className="mt-2 text-sm text-destructive">{standingsError}</p>
-            </CardContent>
-          </Card>
-        ) : standings.length === 0 ? (
-          <Card className="mt-4">
-            <CardContent className="p-6">
-              <h3 className="font-semibold">Keine Tabelle vorhanden</h3>
-
-              <p className="mt-1 text-sm text-muted-foreground">
-                Für diese Liga wurden noch keine Tabellenstände hinterlegt.
-              </p>
-            </CardContent>
-          </Card>
-        ) : (
-          <StandingsTable standings={standings} />
-        )}
+        {gameList(displayedUpcoming, true)}
       </section>
     </main>
   );

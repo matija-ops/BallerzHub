@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { ArrowLeft, Save } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import type { Tables, TablesInsert, TablesUpdate } from "@/lib/supabase";
+import type { Tables, TablesInsert, TablesUpdate } from "@/types/supabase.types";
 import { supabase } from "@/lib/supabase";
 
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-type Game = Tables<"games">;
 type Team = Tables<"teams">;
 type League = Tables<"leagues">;
 
@@ -32,7 +31,6 @@ function GameEditPage() {
 
   const isEditMode = Boolean(gameId);
 
-  const [game, setGame] = useState<Game | null>(null);
   const [league, setLeague] = useState<League | null>(null);
   const [teams, setTeams] = useState<Team[]>([]);
 
@@ -123,7 +121,6 @@ function GameEditPage() {
 
         const loadedGame = gameResult.data;
 
-        setGame(loadedGame);
         setHomeTeamId(loadedGame.home_team_id);
         setAwayTeamId(loadedGame.away_team_id);
         setGameDate(loadedGame.game_date);
@@ -281,7 +278,7 @@ function GameEditPage() {
             >
               <span className="inline-flex items-center gap-2">
                 <ArrowLeft className="size-5 shrink-0" />
-                <span>Zurück zu den Ligen</span>
+                <span>Zurück</span>
               </span>
             </Button>
           </CardContent>
@@ -320,7 +317,11 @@ function GameEditPage() {
             <div className="space-y-2">
               <Label htmlFor="homeTeam">Heimmannschaft</Label>
 
-              <Select value={homeTeamId} onValueChange={setHomeTeamId}>
+              <Select
+                value={homeTeamId || null}
+                items={teams.map((team) => ({ value: team.id, label: team.name }))}
+                onValueChange={(value) => setHomeTeamId(value ?? "")}
+              >
                 <SelectTrigger id="homeTeam" className="w-full">
                   <SelectValue placeholder="Heimmannschaft auswählen" />
                 </SelectTrigger>
@@ -338,7 +339,11 @@ function GameEditPage() {
             <div className="space-y-2">
               <Label htmlFor="awayTeam">Auswärtsmannschaft</Label>
 
-              <Select value={awayTeamId} onValueChange={setAwayTeamId}>
+              <Select
+                value={awayTeamId || null}
+                items={teams.map((team) => ({ value: team.id, label: team.name }))}
+                onValueChange={(value) => setAwayTeamId(value ?? "")}
+              >
                 <SelectTrigger id="awayTeam" className="w-full">
                   <SelectValue placeholder="Auswärtsmannschaft auswählen" />
                 </SelectTrigger>

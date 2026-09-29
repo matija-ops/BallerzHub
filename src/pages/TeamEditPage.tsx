@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { ArrowLeft, Save } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import type { Tables, TablesUpdate } from "@/lib/supabase";
 import { supabase } from "@/lib/supabase";
@@ -225,7 +225,7 @@ function TeamEditPage() {
             >
               <span className="inline-flex items-center gap-2">
                 <ArrowLeft className="size-5 shrink-0" />
-                <span>Zurück zur Mannschaft</span>
+                <span>Zurück</span>
               </span>
             </Button>
           </CardContent>
@@ -243,7 +243,7 @@ function TeamEditPage() {
       >
         <Link to="/teams" className="inline-flex items-center gap-2">
           <ArrowLeft className="size-5 shrink-0" />
-          <span>Zurück zum Team</span>
+          <span>Zurück</span>
         </Link>
       </Button>
 
@@ -296,7 +296,16 @@ function TeamEditPage() {
             <div className="space-y-2">
               <Label htmlFor="league">Liga</Label>
 
-              <Select value={leagueId} onValueChange={setLeagueId}>
+              <Select
+                value={leagueId || null}
+                items={leagues.map((league) => ({
+                  value: league.id,
+                  label: [league.name, league.season, league.division]
+                    .filter(Boolean)
+                    .join(" · "),
+                }))}
+                onValueChange={(value) => setLeagueId(value ?? "")}
+              >
                 <SelectTrigger id="league" className="w-full">
                   <SelectValue placeholder="Liga auswählen" />
                 </SelectTrigger>

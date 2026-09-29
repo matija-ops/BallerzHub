@@ -84,14 +84,9 @@ export function ThemeProvider({
   disableTransitionOnChange = true,
   ...props
 }: ThemeProviderProps) {
-  const [theme, setThemeState] = React.useState<Theme>(() => {
-    const storedTheme = localStorage.getItem(storageKey)
-    if (isTheme(storedTheme)) {
-      return storedTheme
-    }
-
-    return defaultTheme
-  })
+  // The application follows the browser's color scheme by default. Older
+  // persisted "dark" / "light" values must not prevent a system-mode change.
+  const [theme, setThemeState] = React.useState<Theme>(defaultTheme)
 
   const setTheme = React.useCallback(
     (nextTheme: Theme) => {
@@ -123,12 +118,10 @@ export function ThemeProvider({
   React.useEffect(() => {
     applyTheme(theme)
 
-    if (theme !== "system") {
-      return undefined
-    }
-
     const mediaQuery = window.matchMedia(COLOR_SCHEME_QUERY)
     const handleChange = () => {
+      localStorage.setItem(storageKey, "system")
+      setThemeState("system")
       applyTheme("system")
     }
 

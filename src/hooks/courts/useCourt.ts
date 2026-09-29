@@ -14,6 +14,9 @@ type CourtCheckin = Tables<"court_checkins">;
 type CourtFavorite = Tables<"court_favorites">;
 type CourtReport = Tables<"court_reports">;
 
+const COURT_MEDIA_BUCKET = "court_proposals";
+const MAX_COURT_MEDIA = 5;
+
 export function useCourt(courtId: string) {
   const [court, setCourt] = useState<Court | null>(null);
   const [images, setImages] = useState<CourtImage[]>([]);
@@ -35,6 +38,9 @@ export function useCourt(courtId: string) {
 
   const [isReviewSubmitting, setIsReviewSubmitting] = useState(false);
   const [reviewError, setReviewError] = useState<string | null>(null);
+
+  const [isImageUploading, setIsImageUploading] = useState(false);
+  const [imageUploadError, setImageUploadError] = useState<string | null>(null);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -454,6 +460,141 @@ export function useCourt(courtId: string) {
     [court, courtId, isReportSubmitting]
   );
 
+  const uploadCourtImages = useCallback(
+    async (newImages: File[]): Promise<boolean> => {
+      if (isImageUploading) {
+        return false;
+      }
+
+      setIsImageUploading(true);
+      setImageUploadError(null);
+
+      const uploadedPaths: string[] = [];
+
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+          throw new Error("Du musst eingeloggt sein, um Bilder hochzuladen.");
+        }
+
+        if (!Array.isArray(newImages) || newImages.length === 0) {
+          throw new Error("Bitte wähle mindestens ein Bild aus.");
+        }
+
+        if (
+          newImages.some(
+            (image) =>
+              !(image instanceof File) || !image.type.startsWith("image/")
+          )
+        ) {
+          throw new Error("Bitte lade ausschließlich Bilddateien hoch.");
+        }
+
+        const { count, error: countError } = await supabase
+          .from("court_images")
+          .select("id", { count: "exact", head: true })
+          .eq("court_id", courtId);
+
+        if (countError) {
+          throw countError;
+        }
+
+        if ((count ?? 0) + newImages.length > MAX_COURT_MEDIA) {
+          throw new Error(
+            "Pro Court können maximal 5 Medien hochgeladen werden."
+          );
+        }
+
+        const imageRows: TablesInsert<"court_images">[] = [];
+
+        for (const image of newImages) {
+          if (!(image instanceof File)) {
+            throw new Error("Ungültige Mediendatei.");
+          }
+
+          const mediaType = image.type.startsWith("video/")
+            ? "video"
+            : image.type.startsWith("image/")
+              ? "image"
+              : null;
+
+          if (!mediaType) {
+            throw new Error("Bitte lade ausschließlich Bilder oder Videos hoch.");
+          }
+
+          const extension = image.name.split(".").pop()?.toLowerCase() || "jpg";
+          const path = `courts/${courtId}/${user.id}/${crypto.randomUUID()}.${extension}`;
+
+          const { error: uploadError } = await supabase.storage
+            .from(COURT_MEDIA_BUCKET)
+            .upload(path, image, {
+              cacheControl: "3600",
+              contentType: image.type,
+              upsert: false,
+            });
+
+          if (uploadError) {
+            throw uploadError;
+          }
+
+          uploadedPaths.push(path);
+
+          const {
+            data: { publicUrl },
+          } = supabase.storage.from(COURT_MEDIA_BUCKET).getPublicUrl(path);
+
+          imageRows.push({
+            court_id: courtId,
+            image_url: publicUrl,
+            media_type: mediaType,
+            user_id: user.id,
+          });
+        }
+
+        const { data: createdImages, error: insertError } = await supabase
+          .from("court_images")
+          .insert(imageRows)
+          .select();
+
+        if (insertError) {
+          throw insertError;
+        }
+
+        setImages((currentImages) => [
+          ...currentImages,
+          ...(createdImages ?? []),
+        ]);
+        return true;
+      } catch (uploadError) {
+        if (uploadedPaths.length > 0) {
+          const { error: cleanupError } = await supabase.storage
+            .from(COURT_MEDIA_BUCKET)
+            .remove(uploadedPaths);
+
+          if (cleanupError) {
+            console.error(
+              "Court-Bilder konnten nicht bereinigt werden:",
+              cleanupError
+            );
+          }
+        }
+
+        setImageUploadError(
+          uploadError instanceof Error
+            ? uploadError.message
+            : "Die Bilder konnten nicht hochgeladen werden."
+        );
+        return false;
+      } finally {
+        setIsImageUploading(false);
+      }
+    },
+    [courtId, isImageUploading]
+  );
+
   const createReview = useCallback(
     async (rating: number, comment: string) => {
       setIsReviewSubmitting(true);
@@ -661,6 +802,10 @@ export function useCourt(courtId: string) {
     createReview,
     updateReview,
     deleteReview,
+
+    isImageUploading,
+    imageUploadError,
+    uploadCourtImages,
 
     isLoading,
     error,

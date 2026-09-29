@@ -42,7 +42,7 @@ function ReportDetailPage() {
         >
           <span className="inline-flex items-center gap-2">
             <ArrowLeft className="size-5 shrink-0" />
-            <span>Zurück zu meinen Meldungen</span>
+            <span>Zurück</span>
           </span>
         </Button>
       </main>
@@ -70,7 +70,7 @@ function ReportDetailPage() {
         >
           <span className="inline-flex items-center gap-2">
             <ArrowLeft className="size-5 shrink-0" />
-            <span>Zurück zu meinen Meldungen</span>
+            <span>Zurück</span>
           </span>
         </Button>
       </main>
@@ -90,7 +90,7 @@ function ReportDetailPage() {
         >
           <span className="inline-flex items-center gap-2">
             <ArrowLeft className="size-5 shrink-0" />
-            <span>Zurück zu meinen Meldungen</span>
+            <span>Zurück</span>
           </span>
         </Button>
       </main>
@@ -107,7 +107,7 @@ function ReportDetailPage() {
       >
         <span className="inline-flex items-center gap-2">
           <ArrowLeft className="size-5 shrink-0" />
-          <span>Zurück zu meinen Meldungen</span>
+          <span>Zurück</span>
         </span>
       </Button>
 

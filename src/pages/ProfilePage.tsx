@@ -140,7 +140,8 @@ function ProfilePage() {
               className="mt-4"
               onClick={() => navigate("/courts")}
             >
-              Zurück zu den Courts
+              <ArrowLeft className="size-5 shrink-0" />
+              <span>Zurück</span>
             </Button>
           </CardContent>
         </Card>
@@ -160,7 +161,7 @@ function ProfilePage() {
         className="mb-4 -ml-2"
         onClick={() => navigate(-1)}
       >
-        <ArrowLeft className="size-4" />
+        <ArrowLeft className="size-5 shrink-0" />
         Zurück
       </Button>
 

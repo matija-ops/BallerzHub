@@ -130,12 +130,37 @@ export function useCourtProposalsAdmin() {
           status: "active",
         };
 
-        const { error: courtError } = await supabase
+        const { data: createdCourt, error: courtError } = await supabase
           .from("courts")
-          .insert(court);
+          .insert(court)
+          .select("id")
+          .single();
 
         if (courtError) {
           throw courtError;
+        }
+
+        if (!createdCourt) {
+          throw new Error("Der Court konnte nicht erstellt werden.");
+        }
+
+        if (proposal.images.length > 0) {
+          const courtImages: TablesInsert<"court_images">[] = proposal.images
+            .slice(0, 5)
+            .map((image) => ({
+              court_id: createdCourt.id,
+              image_url: image.image_url,
+              media_type: image.media_type,
+              user_id: image.user_id,
+            }));
+
+          const { error: imageError } = await supabase
+            .from("court_images")
+            .insert(courtImages);
+
+          if (imageError) {
+            throw imageError;
+          }
         }
 
         const proposalUpdate: TablesUpdate<"court_proposals"> = {

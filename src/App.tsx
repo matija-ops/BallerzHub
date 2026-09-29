@@ -43,6 +43,8 @@ import GameEditPage from "@/pages/GameEditPage";
 import ProfilePage from "@/pages/ProfilePage";
 import ProfileEditPage from "@/pages/ProfileEditPage";
 
+import AuthCallbackPage from "@/pages/AuthCallbackPage";
+
 function App() {
   return (
     <BrowserRouter>
@@ -53,6 +55,7 @@ function App() {
 
           {/* Authentifizierung */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
 
           <Route path="/register" element={<RegisterPage />} />
 

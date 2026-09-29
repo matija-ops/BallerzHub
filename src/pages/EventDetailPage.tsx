@@ -28,6 +28,7 @@ import { supabase } from "@/lib/supabase";
 import type { Tables } from "@/types/supabase.types";
 
 import EventTeamRegistrationDialog from "@/components/events/EventTeamRegistrationDialog";
+import { DirectionsButton } from "@/components/courts/DirectionsButton";
 import CourtLocationMap from "@/components/courts/CourtLocationMap";
 
 type Event = Tables<"events">;
@@ -560,6 +561,11 @@ function EventDetailPage() {
                 <h2 className="font-semibold">Veranstaltungsort</h2>
 
                 <CourtLocationMap court={court} />
+
+                <DirectionsButton
+                  latitude={court.latitude}
+                  longitude={court.longitude}
+                />
               </section>
             )}
 

@@ -29,7 +29,6 @@ export function useGeocoding() {
       url.searchParams.set("q", trimmedQuery);
       url.searchParams.set("format", "json");
       url.searchParams.set("limit", "1");
-      url.searchParams.set("countrycodes", "de");
 
       const response = await fetch(url.toString(), {
         headers: {

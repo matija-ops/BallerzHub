@@ -136,7 +136,7 @@ function ClubDetailPage() {
               className="mt-4"
               onClick={() => navigate(-1)}
             >
-              <ArrowLeft />
+              <ArrowLeft className="size-5 shrink-0" />
               Zurück
             </Button>
           </CardContent>
@@ -153,7 +153,7 @@ function ClubDetailPage() {
         className="mb-6 text-orange-500 hover:bg-transparent hover:text-orange-400"
         onClick={() => navigate(-1)}
       >
-        <ArrowLeft className="h-5 w-5" />
+        <ArrowLeft className="size-5 shrink-0" />
         <span>Zurück</span>
       </Button>
 

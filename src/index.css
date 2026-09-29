@@ -281,3 +281,61 @@
 .dark .leaflet-control-attribution {
   filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
+
+/* Court location marker: the basketball remains the pin's head. */
+.court-pin-icon {
+  background: transparent;
+  border: 0;
+}
+
+.brand-ball-bounce {
+  transform-origin: 24px 44px;
+  animation: brand-ball-bounce 1s infinite;
+}
+
+.brand-ball-shadow {
+  transform-origin: 24px 48px;
+  animation: brand-ball-shadow 1s infinite;
+}
+
+@keyframes brand-ball-bounce {
+  0%, 100% { transform: translateY(0) scale(1.12, 0.88); animation-timing-function: ease-out; }
+  15% { transform: translateY(-5px) scale(0.94, 1.06); animation-timing-function: ease-out; }
+  50% { transform: translateY(-12px) scale(1, 1); animation-timing-function: ease-in; }
+  85% { transform: translateY(-5px) scale(0.94, 1.06); animation-timing-function: ease-in; }
+}
+
+@keyframes brand-ball-shadow {
+  0%, 100% { transform: scaleX(1); opacity: 0.22; }
+  50% { transform: scaleX(0.6); opacity: 0.1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-ball-bounce,
+  .brand-ball-shadow {
+    animation: none;
+  }
+}
+
+.court-pin-icon__shape {
+  position: absolute;
+  top: 14px;
+  left: 3px;
+  width: 36px;
+  height: 40px;
+  background: #ff5a00;
+  clip-path: polygon(50% 100%, 4% 44%, 4% 18%, 18% 3%, 82% 3%, 96% 18%, 96% 44%);
+  filter: drop-shadow(0 3px 3px rgb(17 28 46 / 35%));
+}
+
+.court-pin-icon__ball {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid #fff;
+  border-radius: 9999px;
+  background: #ff5a00;
+  box-shadow: 0 2px 5px rgb(17 28 46 / 40%);
+}

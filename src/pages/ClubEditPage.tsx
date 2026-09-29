@@ -170,7 +170,7 @@ function ClubEditPage() {
             >
               <span className="inline-flex items-center gap-2">
                 <ArrowLeft className="size-5 shrink-0" />
-                <span>Zurück </span>
+                <span>Zurück</span>
               </span>
             </Button>
           </CardContent>
@@ -188,7 +188,7 @@ function ClubEditPage() {
       >
         <Link to="/clubs" className="inline-flex items-center gap-2">
           <ArrowLeft className="size-5 shrink-0" />
-          <span>Zurück zum Verein</span>
+          <span>Zurück</span>
         </Link>
       </Button>
 

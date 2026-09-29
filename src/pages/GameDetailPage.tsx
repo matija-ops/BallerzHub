@@ -121,7 +121,7 @@ function GameDetailPage() {
           className="mb-4 -ml-2"
           onClick={() => navigate(-1)}
         >
-          <ArrowLeft className="size-4" />
+          <ArrowLeft className="size-5 shrink-0" />
           Zurück
         </Button>
 
@@ -153,7 +153,7 @@ function GameDetailPage() {
         className="mb-4 -ml-2"
         onClick={() => navigate(-1)}
       >
-        <ArrowLeft className="size-4" />
+        <ArrowLeft className="size-5 shrink-0" />
         Zurück
       </Button>
 

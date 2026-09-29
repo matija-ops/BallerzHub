@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { LeagueStanding } from "@/hooks/standings/useLeagueStandings";
 
@@ -8,6 +9,7 @@ type StandingsTableProps = {
 };
 
 function StandingsTable({ standings }: StandingsTableProps) {
+  const navigate = useNavigate();
   return (
     <Card className="mt-4 overflow-hidden">
       <CardContent className="p-0">
@@ -38,12 +40,18 @@ function StandingsTable({ standings }: StandingsTableProps) {
 
                   <td className="px-4 py-4">
                     {standing.team ? (
-                      <Link
-                        to={`/clubs/${standing.team.club_id}/teams/${standing.team.id}`}
-                        className="font-medium hover:underline"
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() =>
+                          navigate(
+                            `/clubs/${standing.team!.club_id}/teams/${standing.team!.id}`
+                          )
+                        }
+                        className="h-auto justify-start text-left whitespace-normal text-primary hover:bg-primary/10"
                       >
                         {standing.team.name}
-                      </Link>
+                      </Button>
                     ) : (
                       <span className="text-muted-foreground">
                         Mannschaft nicht zugeordnet

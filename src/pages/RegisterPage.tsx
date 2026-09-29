@@ -1,3 +1,5 @@
+import { useAuth } from "@/context/AuthContext";
+import { SocialAuthButtons } from "@/components/auth/SocialAuthButtons";
 import {
   useEffect,
   useRef,
@@ -5,7 +7,7 @@ import {
   type ChangeEvent,
   type FormEvent,
 } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import { ImagePlus, X } from "lucide-react";
 
@@ -40,6 +42,9 @@ const ALLOWED_AVATAR_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function RegisterPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [searchParams] = useSearchParams();
+  const completingProfile = searchParams.get("complete") === "1" && !!user;
 
   const avatarInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -222,10 +227,9 @@ function RegisterPage() {
       return;
     }
 
-    const { data: authData, error: signUpError } = await supabase.auth.signUp({
-      email: email.trim(),
-      password,
-    });
+    const { data: authData, error: signUpError } = completingProfile
+      ? { data: { user }, error: null }
+      : await supabase.auth.signUp({ email: email.trim(), password });
 
     if (signUpError) {
       setError(signUpError.message);
@@ -239,8 +243,6 @@ function RegisterPage() {
       return;
     }
 
-    let avatarUrl: string | null = null;
-
     /*
      * Das Profil wird zunächst ohne Bild angelegt.
      * Danach laden wir das Bild hoch und aktualisieren
@@ -248,22 +250,51 @@ function RegisterPage() {
      */
     const profile: ProfileInsert = {
       id: authData.user.id,
+      username: `player_${authData.user.id.replaceAll("-", "")}`,
+      display_name: `${firstName.trim()} ${lastName.trim()}`,
+      avatar_url: "",
+      basketball_position: "",
+      bio: "",
       first_name: firstName.trim(),
       last_name: lastName.trim(),
-      email: email.trim(),
+      email: completingProfile ? (user.email ?? null) : email.trim(),
       birth_date: birthDate,
       location: location.trim(),
       instagram_url: instagramUrl.trim() || null,
-      fiba3x3_url: fiba3x3Url.trim() || null,
+      fiba_3x3_url: fiba3x3Url.trim() || null,
       youtube_url: youtubeUrl.trim() || null,
       tiktok_url: tiktokUrl.trim() || null,
       club_id: clubId || null,
       team_id: teamId || null,
     };
 
-    const { error: profileError } = await supabase
+    const { data: existingProfile, error: lookupError } = await supabase
       .from("profiles")
-      .insert(profile);
+      .select("id")
+      .eq("id", authData.user.id)
+      .maybeSingle();
+    if (lookupError) {
+      setError(lookupError.message);
+      setIsLoading(false);
+      return;
+    }
+    const { error: profileError } = existingProfile
+      ? await supabase
+          .from("profiles")
+          .update({
+            first_name: profile.first_name,
+            last_name: profile.last_name,
+            birth_date: profile.birth_date,
+            location: profile.location,
+            instagram_url: profile.instagram_url,
+            fiba_3x3_url: profile.fiba_3x3_url,
+            youtube_url: profile.youtube_url,
+            tiktok_url: profile.tiktok_url,
+            club_id: profile.club_id,
+            team_id: profile.team_id,
+          })
+          .eq("id", authData.user.id)
+      : await supabase.from("profiles").insert(profile);
 
     if (profileError) {
       setError(profileError.message);
@@ -273,7 +304,7 @@ function RegisterPage() {
 
     if (avatarFile) {
       try {
-        avatarUrl = await uploadAvatar(authData.user.id, avatarFile);
+        const avatarUrl = await uploadAvatar(authData.user.id, avatarFile);
 
         const { error: avatarUpdateError } = await supabase
           .from("profiles")
@@ -308,7 +339,11 @@ function RegisterPage() {
     <main className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Account erstellen</CardTitle>
+          <CardTitle>
+            {completingProfile
+              ? "Profil vervollständigen"
+              : "Account erstellen"}
+          </CardTitle>
 
           <CardDescription>
             Erstelle dein persönliches Basketball-Profil.
@@ -316,45 +351,48 @@ function RegisterPage() {
         </CardHeader>
 
         <CardContent>
+          {/* {!completingProfile && <SocialAuthButtons disabled={isLoading} />} */}
           <form onSubmit={handleRegister} className="space-y-6">
-            <section className="space-y-4">
-              <div>
-                <h2 className="font-semibold">Account</h2>
+            {!completingProfile && (
+              <section className="space-y-4">
+                <div>
+                  <h2 className="font-semibold">Account</h2>
 
-                <p className="text-sm text-muted-foreground">
-                  Deine Zugangsdaten für BallHub.
-                </p>
-              </div>
+                  <p className="text-sm text-muted-foreground">
+                    Deine Zugangsdaten für BallerzHub.
+                  </p>
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email">E-Mail</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="email">E-Mail</Label>
 
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="name@example.com"
-                  autoComplete="email"
-                  required
-                />
-              </div>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder="name@example.com"
+                    autoComplete="email"
+                    required
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Passwort</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="password">Passwort</Label>
 
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  placeholder="Mindestens 6 Zeichen"
-                  autoComplete="new-password"
-                  minLength={6}
-                  required
-                />
-              </div>
-            </section>
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    placeholder="Mindestens 6 Zeichen"
+                    autoComplete="new-password"
+                    minLength={6}
+                    required
+                  />
+                </div>
+              </section>
+            )}
 
             <section className="space-y-4">
               <div>
@@ -541,15 +579,6 @@ function RegisterPage() {
             </section>
 
             <section className="space-y-4">
-              <div>
-                <h2 className="font-semibold">Basketball</h2>
-
-                <p className="text-sm text-muted-foreground">
-                  Optional kannst du deinen Verein und deine Mannschaft
-                  hinterlegen.
-                </p>
-              </div>
-
               <div className="space-y-2">
                 <Label>Gehörst du einem Verein an?</Label>
 
@@ -651,7 +680,11 @@ function RegisterPage() {
               className="w-full"
               disabled={isLoading || isLoadingClubs || isLoadingTeams}
             >
-              {isLoading ? "Account wird erstellt …" : "Registrieren"}
+              {isLoading
+                ? "Wird gespeichert …"
+                : completingProfile
+                  ? "Profil speichern"
+                  : "Registrieren"}
             </Button>
 
             <p className="text-center text-sm text-muted-foreground">

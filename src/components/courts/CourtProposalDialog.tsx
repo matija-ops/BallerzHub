@@ -100,7 +100,17 @@ export function CourtProposalDialog({
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(event.target.files ?? []);
 
-    setImages((currentImages) => [...currentImages, ...selectedFiles]);
+    setImages((currentImages) => {
+      const updatedImages = [...currentImages, ...selectedFiles];
+
+      if (updatedImages.length > 5) {
+        setValidationError("Du kannst maximal 5 Bilder hochladen.");
+        return updatedImages.slice(0, 5);
+      }
+
+      setValidationError(null);
+      return updatedImages;
+    });
 
     event.target.value = "";
   };
@@ -141,6 +151,11 @@ export function CourtProposalDialog({
 
     if (!description.trim()) {
       setValidationError("Bitte beschreibe den Court.");
+      return;
+    }
+
+    if (images.length > 5) {
+      setValidationError("Du kannst maximal 5 Bilder hochladen.");
       return;
     }
 
@@ -188,7 +203,10 @@ export function CourtProposalDialog({
         }
       />
 
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
+      <DialogContent
+        portalClassName="relative z-[6000]"
+        className="max-h-[90vh] overflow-y-auto sm:max-w-lg"
+      >
         <DialogHeader>
           <DialogTitle>Neuen Court vorschlagen</DialogTitle>
 
@@ -339,7 +357,7 @@ export function CourtProposalDialog({
                 <span className="text-sm font-medium">Bilder auswählen</span>
 
                 <span className="mt-1 text-xs text-muted-foreground">
-                  Du kannst mehrere Bilder hinzufügen.
+                  Bis zu 5 Bilder hinzufügen ({images.length}/5).
                 </span>
               </label>
 
@@ -350,7 +368,7 @@ export function CourtProposalDialog({
                 multiple
                 className="hidden"
                 onChange={handleImageChange}
-                disabled={isSubmitting}
+                disabled={isSubmitting || images.length >= 5}
               />
 
               {images.length > 0 && (

@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { LeagueGame } from "@/hooks/games/useLeagueGames";
 
 type GameCardProps = {
   game: LeagueGame;
+  upcoming?: boolean;
 };
 
 function formatDate(date: string) {
@@ -16,10 +18,11 @@ function formatDate(date: string) {
 function formatTime(time: string | null) {
   if (!time) return "Uhrzeit offen";
 
-  return time.slice(0, 5);
+  return `${time.slice(0, 5)} Uhr`;
 }
 
-function GameCard({ game }: GameCardProps) {
+function GameCard({ game, upcoming = false }: GameCardProps) {
+  const navigate = useNavigate();
   return (
     <Card>
       <CardContent className="p-5">
@@ -29,23 +32,35 @@ function GameCard({ game }: GameCardProps) {
         </div>
 
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
-          <Link
-            to={`/clubs/${game.home_team.club_id}/teams/${game.home_team.id}`}
-            className="font-medium hover:underline"
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() =>
+              navigate(
+                `/clubs/${game.home_team.club_id}/teams/${game.home_team.id}`
+              )
+            }
+            className="h-auto justify-start text-left whitespace-normal text-primary hover:bg-primary/10"
           >
             {game.home_team.name}
-          </Link>
+          </Button>
 
           <div className="text-center text-sm font-semibold text-muted-foreground">
-            {game.home_score} : {game.away_score}
+            {upcoming ? "vs." : `${game.home_score} : ${game.away_score}`}
           </div>
 
-          <Link
-            to={`/clubs/${game.away_team.club_id}/teams/${game.away_team.id}`}
-            className="text-right font-medium hover:underline"
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() =>
+              navigate(
+                `/clubs/${game.away_team.club_id}/teams/${game.away_team.id}`
+              )
+            }
+            className="h-auto justify-end text-right whitespace-normal text-primary hover:bg-primary/10"
           >
             {game.away_team.name}
-          </Link>
+          </Button>
         </div>
       </CardContent>
     </Card>
