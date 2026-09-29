@@ -20,6 +20,8 @@ function TeamDetailPage() {
     teamId: string;
   }>();
 
+  const navigate = useNavigate();
+
   const [team, setTeam] = useState<Team | null>(null);
   const [club, setClub] = useState<Club | null>(null);
   const [league, setLeague] = useState<League | null>(null);
@@ -27,7 +29,6 @@ function TeamDetailPage() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!clubId || !teamId) {
@@ -170,13 +171,13 @@ function TeamDetailPage() {
             </p>
 
             <Button
-              asChild
-              variant="link"
-              className="mt-4"
+              type="button"
+              variant="ghost"
+              className="mt-4 mb-6 text-orange-500 hover:bg-transparent hover:text-orange-400"
               onClick={() => navigate(-1)}
             >
-              <ArrowLeft />
-              Zurück zum Verein
+              <ArrowLeft className="size-5 shrink-0" />
+              <span>Zurück</span>
             </Button>
           </CardContent>
         </Card>
@@ -188,13 +189,13 @@ function TeamDetailPage() {
     <main className="container mx-auto px-4 py-6">
       <div className="mb-6">
         <Button
-          asChild
-          variant="link"
-          className="mt-4"
+          type="button"
+          variant="ghost"
+          className="mt-4 mb-6 text-orange-500 hover:bg-transparent hover:text-orange-400"
           onClick={() => navigate(-1)}
         >
-          <ArrowLeft />
-          Zurück zum Verein
+          <ArrowLeft className="size-5 shrink-0" />
+          <span>Zurück</span>
         </Button>
       </div>
 

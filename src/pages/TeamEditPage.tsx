@@ -238,14 +238,13 @@ function TeamEditPage() {
     <main className="container mx-auto px-4 py-6">
       <Button
         asChild
-        variant="link"
-        className="mt-4"
-        onClick={() => navigate(-1)}
+        variant="ghost"
+        className="mt-4 mb-6 text-orange-500 hover:bg-transparent hover:text-orange-400"
       >
-        <span className="inline-flex items-center gap-2">
+        <Link to="/teams" className="inline-flex items-center gap-2">
           <ArrowLeft className="size-5 shrink-0" />
-          <span>Zurück zur Mannschaft</span>
-        </span>
+          <span>Zurück zum Team</span>
+        </Link>
       </Button>
 
       <Card className="mt-4 max-w-2xl">

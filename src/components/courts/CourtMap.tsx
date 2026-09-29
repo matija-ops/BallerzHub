@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  MapContainer,
-  Marker,
-  TileLayer,
-  useMap,
-  useMapEvents,
-} from "react-leaflet";
+import { MapContainer, Marker, useMap, useMapEvents } from "react-leaflet";
 import type { LatLngExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -14,6 +8,7 @@ import type { Tables } from "@/types/supabase.types";
 import { CourtLocationButton } from "./CourtLocationButton";
 import { CourtMarker } from "./CourtMarker";
 import { CourtMapController } from "./CourtMapController";
+import { BasketballMapLayer } from "./BasketballMapLayer";
 
 type Court = Tables<"courts">;
 
@@ -117,11 +112,13 @@ export function CourtMap({
         className="h-full w-full"
         style={{ zIndex: 0 }}
         zoomControl={false}
+        minZoom={1}
+        maxBounds={[
+          [-85, -180],
+          [85, 180],
+        ]}
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <BasketballMapLayer />
 
         <CourtMapController selectedCourt={selectedCourt} />
 

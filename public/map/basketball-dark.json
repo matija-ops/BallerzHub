@@ -1,0 +1,137 @@
+{
+  "version": 8,
+  "name": "Basketball Dark",
+  "sources": {
+    "openmaptiles": {
+      "type": "vector",
+      "url": "https://tiles.openfreemap.org/planet"
+    }
+  },
+  "glyphs": "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+  "sprite": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "#101820"
+      }
+    },
+    {
+      "id": "land",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "landcover",
+      "paint": {
+        "fill-color": "#14251f"
+      }
+    },
+    {
+      "id": "water",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "water",
+      "paint": {
+        "fill-color": "#0d2530"
+      }
+    },
+    {
+      "id": "waterway",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "waterway",
+      "paint": {
+        "line-color": "#12313d",
+        "line-width": 1
+      }
+    },
+    {
+      "id": "buildings",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "building",
+      "paint": {
+        "fill-color": "#161f29",
+        "fill-opacity": 0.8
+      }
+    },
+    {
+      "id": "roads",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "paint": {
+        "line-color": "#1b2b2a",
+        "line-width": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          5,
+          0.5,
+          10,
+          1.5,
+          15,
+          4
+        ]
+      }
+    },
+    {
+      "id": "road-casing",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "filter": ["in", "class", "motorway", "trunk"],
+      "paint": {
+        "line-color": "#162321",
+        "line-width": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          5,
+          1.5,
+          10,
+          3,
+          15,
+          8
+        ]
+      }
+    },
+    {
+      "id": "roads-major",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "filter": ["in", "class", "motorway", "trunk", "primary", "secondary"],
+      "paint": {
+        "line-color": "#294039",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 5, 1, 10, 2, 15, 6]
+      }
+    },
+    {
+      "id": "place-label",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "layout": {
+        "text-field": "{name:latin}",
+        "text-font": ["Noto Sans Regular"],
+        "text-size": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          5,
+          10,
+          10,
+          13,
+          15,
+          16
+        ]
+      },
+      "paint": {
+        "text-color": "#9da8b5",
+        "text-halo-color": "#101820",
+        "text-halo-width": 1
+      }
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { ArrowLeft, Plus, Pencil } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import GameCard from "@/components/games/GameCard";
 import StandingsTable from "@/components/standings/StandingsTable";
@@ -80,14 +80,15 @@ function LeagueDetailPage() {
 
             <Button
               asChild
-              variant="link"
-              className="mt-4"
-              onClick={() => navigate(-1)}
+              className="w-full shrink-0 bg-orange-500 text-white hover:bg-orange-600 sm:w-auto"
             >
-              <span className="inline-flex items-center gap-2">
-                <ArrowLeft className="size-5 shrink-0" />
-                <span>Zurück zu den Ligen</span>
-              </span>
+              <Link
+                to={`/leagues/${league.id}/games/${game.id}/edit`}
+                className="flex items-center justify-center gap-2"
+              >
+                <Pencil className="size-4 shrink-0" />
+                <span>Bearbeiten</span>
+              </Link>
             </Button>
           </CardContent>
         </Card>
@@ -98,15 +99,13 @@ function LeagueDetailPage() {
   return (
     <main className="container mx-auto px-4 py-6">
       <Button
-        asChild
-        variant="link"
-        className="mt-4"
+        type="button"
+        variant="ghost"
+        className="text-orange-500 hover:bg-transparent hover:text-orange-400"
         onClick={() => navigate(-1)}
       >
-        <span className="inline-flex items-center gap-2">
-          <ArrowLeft className="size-5 shrink-0" />
-          <span>Zurück zu den Ligen</span>
-        </span>
+        <ArrowLeft className="size-5 shrink-0" />
+        <span>Zurück</span>
       </Button>
 
       {/* Liga-Informationen */}
@@ -248,16 +247,13 @@ function LeagueDetailPage() {
                         <GameCard game={game} />
                       </div>
 
-                      <Button
-                        asChild
-                        variant="outline"
-                        className="w-full shrink-0 sm:w-auto"
-                      >
+                      <Button asChild className="w-full shrink-0 sm:w-auto">
                         <Link
                           to={`/leagues/${league.id}/games/${game.id}/edit`}
+                          className="flex w-full items-center justify-center gap-2"
                         >
-                          <Pencil />
-                          Bearbeiten
+                          <Pencil className="size-4 shrink-0" />
+                          <span>Bearbeiten</span>
                         </Link>
                       </Button>
                     </div>
@@ -289,16 +285,13 @@ function LeagueDetailPage() {
                         <GameCard game={game} />
                       </div>
 
-                      <Button
-                        asChild
-                        variant="outline"
-                        className="w-full shrink-0 sm:w-auto"
-                      >
+                      <Button asChild className="w-full shrink-0 sm:w-auto">
                         <Link
                           to={`/leagues/${league.id}/games/${game.id}/edit`}
+                          className="flex w-full items-center justify-center gap-2"
                         >
-                          <Pencil />
-                          Bearbeiten
+                          <Pencil className="size-4 shrink-0" />
+                          <span>Bearbeiten</span>
                         </Link>
                       </Button>
                     </div>

@@ -152,14 +152,13 @@ function CourtDetail({ courtId }: CourtDetailProps) {
         <div className="mb-2">
           <Button
             asChild
-            variant="link"
-            className="mt-4"
-            onClick={() => navigate(-1)}
+            variant="ghost"
+            className="mt-4 mb-6 text-orange-500 hover:bg-transparent hover:text-orange-400"
           >
-            <span className="inline-flex items-center gap-2">
+            <Link to="/courts" className="inline-flex items-center gap-2">
               <ArrowLeft className="size-5 shrink-0" />
               <span>Zurück zur Map</span>
-            </span>
+            </Link>
           </Button>
         </div>
 

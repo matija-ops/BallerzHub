@@ -170,7 +170,7 @@ function ClubEditPage() {
             >
               <span className="inline-flex items-center gap-2">
                 <ArrowLeft className="size-5 shrink-0" />
-                <span>Zurück zu den Vereinen</span>
+                <span>Zurück </span>
               </span>
             </Button>
           </CardContent>
@@ -183,14 +183,13 @@ function ClubEditPage() {
     <main className="container mx-auto px-4 py-6">
       <Button
         asChild
-        variant="link"
-        className="mt-4"
-        onClick={() => navigate(-1)}
+        variant="ghost"
+        className="mt-4 mb-6 text-orange-500 hover:bg-transparent hover:text-orange-400"
       >
-        <span className="inline-flex items-center gap-2">
+        <Link to="/clubs" className="inline-flex items-center gap-2">
           <ArrowLeft className="size-5 shrink-0" />
           <span>Zurück zum Verein</span>
-        </span>
+        </Link>
       </Button>
 
       <Card className="mt-4 max-w-2xl">

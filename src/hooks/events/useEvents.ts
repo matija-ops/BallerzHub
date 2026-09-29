@@ -4,9 +4,14 @@ import { supabase } from "@/lib/supabase";
 import type { Tables } from "@/types/supabase.types";
 
 type Event = Tables<"events">;
+type EventImage = Tables<"event_images">;
+
+export type EventWithImages = Event & {
+  event_images: EventImage[];
+};
 
 export function useEvents() {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<EventWithImages[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,18 +21,25 @@ export function useEvents() {
 
     const { data, error: supabaseError } = await supabase
       .from("events")
-      .select("*")
+      .select(
+        `
+        *,
+        event_images (*)
+      `
+      )
       .order("event_date", { ascending: true })
       .order("event_time", { ascending: true });
-    console.log(data);
+
     if (supabaseError) {
+      console.error("Events konnten nicht geladen werden:", supabaseError);
+
       setEvents([]);
       setError(supabaseError.message);
       setIsLoading(false);
       return;
     }
 
-    setEvents(data ?? []);
+    setEvents((data ?? []) as EventWithImages[]);
     setIsLoading(false);
   }, []);
 

@@ -293,15 +293,13 @@ function GameEditPage() {
   return (
     <main className="container mx-auto px-4 py-6">
       <Button
-        asChild
-        variant="link"
-        className="mt-4"
+        type="button"
+        variant="ghost"
+        className="text-orange-500 hover:bg-transparent hover:text-orange-400"
         onClick={() => navigate(-1)}
       >
-        <span className="inline-flex items-center gap-2">
-          <ArrowLeft className="size-5 shrink-0" />
-          <span>Zurück zur Liga</span>
-        </span>
+        <ArrowLeft className="size-5 shrink-0" />
+        <span>Zurück</span>
       </Button>
 
       <Card className="mt-4 max-w-2xl">

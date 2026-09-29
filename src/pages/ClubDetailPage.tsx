@@ -1,5 +1,5 @@
 import { ArrowLeft, Pencil, Plus } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import type { Tables } from "@/lib/supabase";
@@ -14,6 +14,7 @@ type Team = Tables<"teams">;
 
 function ClubDetailPage() {
   const { clubId } = useParams<{ clubId: string }>();
+  const navigate = useNavigate();
 
   const [club, setClub] = useState<Club | null>(null);
   const [teams, setTeams] = useState<Team[]>([]);
@@ -129,11 +130,14 @@ function ClubDetailPage() {
               {error ?? "Der Verein wurde nicht gefunden."}
             </p>
 
-            <Button asChild variant="outline" className="mt-4">
-              <Link to="/clubs">
-                <ArrowLeft />
-                Zurück zu den Vereinen
-              </Link>
+            <Button
+              type="button"
+              variant="outline"
+              className="mt-4"
+              onClick={() => navigate(-1)}
+            >
+              <ArrowLeft />
+              Zurück
             </Button>
           </CardContent>
         </Card>
@@ -143,11 +147,14 @@ function ClubDetailPage() {
 
   return (
     <main className="container mx-auto px-4 py-6">
-      <Button asChild variant="ghost" className="mb-6">
-        <Link to="/clubs">
-          <ArrowLeft />
-          Zurück zu den Vereinen
-        </Link>
+      <Button
+        type="button"
+        variant="ghost"
+        className="mb-6 text-orange-500 hover:bg-transparent hover:text-orange-400"
+        onClick={() => navigate(-1)}
+      >
+        <ArrowLeft className="h-5 w-5" />
+        <span>Zurück</span>
       </Button>
 
       <div className="space-y-8">
