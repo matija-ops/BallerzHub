@@ -16,6 +16,7 @@ type MapLocation = [number, number];
 
 interface CourtMapProps {
   courts: Court[];
+  favoriteCourtIds: Set<string>;
   selectedCourt: Court | null;
   searchLocation: MapLocation | null;
   isSearching: boolean;
@@ -24,6 +25,7 @@ interface CourtMapProps {
   isSelectingLocation?: boolean;
   selectedLocation?: MapLocation | null;
   onSelectLocation?: (location: MapLocation) => void;
+  onVisibleCourtsChange: (courts: Court[]) => void;
 }
 
 const DEFAULT_CENTER: LatLngExpression = [51.1657, 10.4515];
@@ -32,27 +34,43 @@ const COURT_MARKER_MIN_ZOOM = 9;
 
 function CourtMarkers({
   courts,
+  favoriteCourtIds,
   onSelectCourt,
+  onVisibleCourtsChange,
 }: {
   courts: Court[];
+  favoriteCourtIds: Set<string>;
   onSelectCourt: (court: Court) => void;
+  onVisibleCourtsChange: (courts: Court[]) => void;
 }) {
   const map = useMap();
   const [areMarkersVisible, setAreMarkersVisible] = useState(
     () => map.getZoom() >= COURT_MARKER_MIN_ZOOM
   );
 
-  useMapEvents({
-    zoomend() {
-      setAreMarkersVisible(map.getZoom() >= COURT_MARKER_MIN_ZOOM);
-    },
-  });
+  const updateVisibleCourts = () => {
+    const favorites = courts.filter((court) => favoriteCourtIds.has(court.id));
+    const inViewport = map.getZoom() >= COURT_MARKER_MIN_ZOOM
+      ? courts.filter((court) => map.getBounds().contains([court.latitude, court.longitude]))
+      : [];
+    const visible = Array.from(new Map([...favorites, ...inViewport].map((court) => [court.id, court])).values());
+    setAreMarkersVisible(map.getZoom() >= COURT_MARKER_MIN_ZOOM);
+    onVisibleCourtsChange(visible);
+  };
+
+  useMapEvents({ zoomend: updateVisibleCourts, moveend: updateVisibleCourts });
 
   if (!areMarkersVisible) {
-    return null;
+    return courts
+      .filter((court) => favoriteCourtIds.has(court.id))
+      .map((court) => <CourtMarker key={court.id} court={court} onSelect={onSelectCourt} />);
   }
 
-  return courts.map((court) => (
+  const markers = courts.filter(
+    (court) => favoriteCourtIds.has(court.id) || map.getBounds().contains([court.latitude, court.longitude])
+  );
+
+  return markers.map((court) => (
     <CourtMarker key={court.id} court={court} onSelect={onSelectCourt} />
   ));
 }
@@ -97,12 +115,14 @@ function LocationSelectionController({
 export function CourtMap({
   courts,
   selectedCourt,
+  favoriteCourtIds,
   searchLocation,
   isSearching,
   onSelectCourt,
   isSelectingLocation = false,
   selectedLocation = null,
   onSelectLocation,
+  onVisibleCourtsChange,
 }: CourtMapProps) {
   const [userLocation, setUserLocation] = useState<MapLocation | null>(null);
 
@@ -190,7 +210,12 @@ export function CourtMap({
           onSelectLocation={onSelectLocation}
         />
 
-        <CourtMarkers courts={validCourts} onSelectCourt={onSelectCourt} />
+        <CourtMarkers
+          courts={validCourts}
+          favoriteCourtIds={favoriteCourtIds}
+          onSelectCourt={onSelectCourt}
+          onVisibleCourtsChange={onVisibleCourtsChange}
+        />
 
         {userLocation && <Marker position={userLocation} />}
 

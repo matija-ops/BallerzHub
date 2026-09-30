@@ -35,7 +35,7 @@ export function CourtSearch({ onSearch, isSearching }: CourtSearchProps) {
         onChange={(event) => setQuery(event.target.value)}
         placeholder="Ort oder Stadt weltweit suchen ..."
         disabled={isSearching}
-        className="h-full flex-1 border-0 px-2 text-base shadow-none focus-visible:ring-0 dark:bg-transparent"
+        className="!bg-transparent h-full flex-1 border-0 px-2 text-base shadow-none focus-visible:ring-0"
       />
 
       <Button

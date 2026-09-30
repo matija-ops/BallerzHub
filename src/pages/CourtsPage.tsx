@@ -9,6 +9,7 @@ import { CourtSearch } from "@/components/courts/CourtSearch";
 import { useCourts } from "@/hooks/courts/useCourts";
 import { useCourtProposals } from "@/hooks/courts/useCourtProposals";
 import { useGeocoding } from "@/hooks/courts/useGeocoding";
+import { useCourtFavorites } from "@/hooks/courts/useCourtFavorites";
 
 import { Button } from "@/components/ui/button";
 import type { Tables } from "@/types/supabase.types";
@@ -20,6 +21,8 @@ function CourtsPage() {
   const navigate = useNavigate();
 
   const { courts, isLoading, error, refetch } = useCourts();
+  const favoriteCourtIds = useCourtFavorites();
+  const [visibleCourts, setVisibleCourts] = useState<Court[]>([]);
 
   const {
     isSubmitting: isProposalSubmitting,
@@ -44,6 +47,8 @@ function CourtsPage() {
     setSelectedCourt(court);
     void navigate(`/courts/${court.id}`);
   };
+
+  const favoriteCourts = courts.filter((court) => favoriteCourtIds.has(court.id));
 
   const handleRequestLocationSelection = () => {
     setIsProposalDialogOpen(false);
@@ -80,6 +85,7 @@ function CourtsPage() {
     <main className="relative -mt-16 h-[100dvh] w-full overflow-hidden">
       <CourtMap
         courts={courts}
+        favoriteCourtIds={favoriteCourtIds}
         selectedCourt={selectedCourt}
         searchLocation={searchLocation}
         isSearching={isSearching}
@@ -87,6 +93,7 @@ function CourtsPage() {
         isSelectingLocation={isSelectingProposalLocation}
         selectedLocation={proposalLocation}
         onSelectLocation={handleSelectProposalLocation}
+        onVisibleCourtsChange={setVisibleCourts}
       />
 
       <div className="fixed top-0 right-0 left-0 z-[1000] flex items-center gap-2 bg-background/60 [mask-image:linear-gradient(to_bottom,black_45%,transparent_100%)] p-4 pb-16 sm:justify-center sm:gap-4">
@@ -110,7 +117,7 @@ function CourtsPage() {
         </div>
       </div>
       <CourtListSheet
-        courts={courts}
+        courts={visibleCourts.length || favoriteCourts.length ? visibleCourts : favoriteCourts}
         selectedCourt={selectedCourt}
         onSelectCourt={handleSelectCourt}
       />

@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "tsx src/scripts/import-osm-courts.ts ./sport.geojson",
+    "fetch:basketball-bund": "node scripts/fetch-basketball-bund.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -36,6 +38,7 @@
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.18.2",
     "shadcn": "^4.19.0",
+    "stream-json": "^3.7.0",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4",
     "temporal-polyfill": "^1.0.5",
@@ -57,6 +60,7 @@
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "sass-embedded": "^1.104.1",
+    "tsx": "^4.23.15",
     "typescript": "~6",
     "typescript-eslint": "^8",
     "vite": "^8"
