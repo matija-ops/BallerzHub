@@ -290,7 +290,7 @@ export type Database = {
           created_at: string | null;
           id: string;
           image_url: string;
-          media_type: "image" | "video";
+          media_type: string;
           user_id: string | null;
         };
         Insert: {
@@ -298,7 +298,7 @@ export type Database = {
           created_at?: string | null;
           id?: string;
           image_url: string;
-          media_type?: "image" | "video";
+          media_type?: string;
           user_id?: string | null;
         };
         Update: {
@@ -306,7 +306,7 @@ export type Database = {
           created_at?: string | null;
           id?: string;
           image_url?: string;
-          media_type?: "image" | "video";
+          media_type?: string;
           user_id?: string | null;
         };
         Relationships: [
@@ -331,7 +331,7 @@ export type Database = {
           created_at: string | null;
           id: string;
           image_url: string;
-          media_type: "image" | "video";
+          media_type: string;
           proposal_id: string;
           user_id: string | null;
         };
@@ -339,7 +339,7 @@ export type Database = {
           created_at?: string | null;
           id?: string;
           image_url: string;
-          media_type?: "image" | "video";
+          media_type?: string;
           proposal_id: string;
           user_id?: string | null;
         };
@@ -347,7 +347,7 @@ export type Database = {
           created_at?: string | null;
           id?: string;
           image_url?: string;
-          media_type?: "image" | "video";
+          media_type?: string;
           proposal_id?: string;
           user_id?: string | null;
         };
@@ -562,7 +562,7 @@ export type Database = {
           is_accessible: boolean;
           latitude: number;
           longitude: number;
-          municipality_id: string;
+          municipality_id: string | null;
           name: string;
           status: string;
           type: string;
@@ -576,7 +576,7 @@ export type Database = {
           is_accessible?: boolean;
           latitude: number;
           longitude: number;
-          municipality_id: string;
+          municipality_id?: string | null;
           name: string;
           status?: string;
           type: string;
@@ -590,7 +590,7 @@ export type Database = {
           is_accessible?: boolean;
           latitude?: number;
           longitude?: number;
-          municipality_id?: string;
+          municipality_id?: string | null;
           name?: string;
           status?: string;
           type?: string;
@@ -867,39 +867,57 @@ export type Database = {
       };
       games: {
         Row: {
-          away_score: number;
+          away_score: number | null;
           away_team_id: string;
+          cancelled: boolean;
           created_at: string | null;
+          external_match_day: number | null;
+          external_match_id: number | null;
+          external_source: string | null;
+          external_synced_at: string | null;
           game_date: string;
           game_time: string | null;
-          home_score: number;
+          home_score: number | null;
           home_team_id: string;
           id: string;
           league_id: string;
+          result_confirmed: boolean;
           updated_at: string | null;
         };
         Insert: {
-          away_score: number;
+          away_score?: number | null;
           away_team_id: string;
+          cancelled?: boolean;
           created_at?: string | null;
+          external_match_day?: number | null;
+          external_match_id?: number | null;
+          external_source?: string | null;
+          external_synced_at?: string | null;
           game_date: string;
           game_time?: string | null;
-          home_score: number;
+          home_score?: number | null;
           home_team_id: string;
           id?: string;
           league_id: string;
+          result_confirmed?: boolean;
           updated_at?: string | null;
         };
         Update: {
-          away_score?: number;
+          away_score?: number | null;
           away_team_id?: string;
+          cancelled?: boolean;
           created_at?: string | null;
+          external_match_day?: number | null;
+          external_match_id?: number | null;
+          external_source?: string | null;
+          external_synced_at?: string | null;
           game_date?: string;
           game_time?: string | null;
-          home_score?: number;
+          home_score?: number | null;
           home_team_id?: string;
           id?: string;
           league_id?: string;
+          result_confirmed?: boolean;
           updated_at?: string | null;
         };
         Relationships: [
@@ -931,6 +949,10 @@ export type Database = {
           age_group: string | null;
           created_at: string | null;
           division: string | null;
+          external_liga_id: number | null;
+          external_season_id: number | null;
+          external_source: string | null;
+          external_synced_at: string | null;
           id: string;
           name: string;
           season: string | null;
@@ -939,6 +961,10 @@ export type Database = {
           age_group?: string | null;
           created_at?: string | null;
           division?: string | null;
+          external_liga_id?: number | null;
+          external_season_id?: number | null;
+          external_source?: string | null;
+          external_synced_at?: string | null;
           id?: string;
           name: string;
           season?: string | null;
@@ -947,6 +973,10 @@ export type Database = {
           age_group?: string | null;
           created_at?: string | null;
           division?: string | null;
+          external_liga_id?: number | null;
+          external_season_id?: number | null;
+          external_source?: string | null;
+          external_synced_at?: string | null;
           id?: string;
           name?: string;
           season?: string | null;
@@ -1269,6 +1299,11 @@ export type Database = {
           age_group: string;
           club_id: string;
           created_at: string | null;
+          external_permanent_team_id: number | null;
+          external_season_team_id: number | null;
+          external_source: string | null;
+          external_synced_at: string | null;
+          external_team_competition_id: number | null;
           id: string;
           league_id: string;
           name: string;
@@ -1278,6 +1313,11 @@ export type Database = {
           age_group: string;
           club_id: string;
           created_at?: string | null;
+          external_permanent_team_id?: number | null;
+          external_season_team_id?: number | null;
+          external_source?: string | null;
+          external_synced_at?: string | null;
+          external_team_competition_id?: number | null;
           id?: string;
           league_id?: string;
           name: string;
@@ -1287,6 +1327,11 @@ export type Database = {
           age_group?: string;
           club_id?: string;
           created_at?: string | null;
+          external_permanent_team_id?: number | null;
+          external_season_team_id?: number | null;
+          external_source?: string | null;
+          external_synced_at?: string | null;
+          external_team_competition_id?: number | null;
           id?: string;
           league_id?: string;
           name?: string;

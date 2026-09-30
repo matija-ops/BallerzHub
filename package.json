@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "test": "tsx src/scripts/import-osm-courts.ts ./sport.geojson",
-    "fetch:basketball-bund": "node scripts/fetch-basketball-bund.mjs"
+    "fetch:basketball-bund": "node scripts/fetch-basketball-bund.mjs",
+    "sync:basketball-bund": "node scripts/sync-basketball-bund.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

@@ -4,6 +4,8 @@ import type { Tables } from "@/types/supabase.types";
 
 type Court = Tables<"courts">;
 
+const COURTS_PAGE_SIZE = 1000;
+
 export function useCourts() {
   const [courts, setCourts] = useState<Court[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -13,17 +15,31 @@ export function useCourts() {
     setIsLoading(true);
     setError(null);
 
-    const { data, error: supabaseError } = await supabase
-      .from("courts")
-      .select("*");
+    const allCourts: Court[] = [];
 
-    if (supabaseError) {
-      setCourts([]);
-      setError(supabaseError.message);
-      setIsLoading(false);
-      return;
+    for (let from = 0; ; from += COURTS_PAGE_SIZE) {
+      const { data, error: supabaseError } = await supabase
+        .from("courts")
+        .select("*")
+        .order("id")
+        .range(from, from + COURTS_PAGE_SIZE - 1);
+
+      if (supabaseError) {
+        setCourts([]);
+        setError(supabaseError.message);
+        setIsLoading(false);
+        return;
+      }
+
+      const page = data ?? [];
+      allCourts.push(...page);
+
+      if (page.length < COURTS_PAGE_SIZE) {
+        break;
+      }
     }
-    setCourts(data ?? []);
+
+    setCourts(allCourts);
     setIsLoading(false);
   }, []);
 

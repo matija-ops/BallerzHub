@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // Node.js 18+ (native fetch)
-// Beispiel: node scripts/fetch-basketball-bund.mjs 54604 --out data/basketball-bund-54604.json
+// Beispiel: node scripts/fetch-basketball-bund.mjs 54610 --out data/basketball-bund-54610.json
 
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";

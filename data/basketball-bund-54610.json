@@ -1,0 +1,795 @@
+{
+  "fetchedAt": "2026-09-30T11:37:19.158Z",
+  "source": "https://www.basketball-bund.net/rest/competition/actual/id/54610",
+  "liga": {
+    "ligaId": 54610,
+    "seasonId": 2026,
+    "seasonName": "2026/2027",
+    "liganame": "Bezirksliga 06 Herren (BeL06H)"
+  },
+  "teams": [
+    {
+      "seasonTeamId": 451710,
+      "teamCompetitionId": 451710,
+      "teamPermanentId": 275043,
+      "teamname": "TV Breyell",
+      "clubId": 2040
+    },
+    {
+      "seasonTeamId": 451709,
+      "teamCompetitionId": 451709,
+      "teamPermanentId": 316184,
+      "teamname": "TSV Kaldenkirchen Basketball",
+      "clubId": 4969
+    },
+    {
+      "seasonTeamId": 451708,
+      "teamCompetitionId": 451708,
+      "teamPermanentId": 168918,
+      "teamname": "SpVg Odenkirchen 2",
+      "clubId": 447
+    },
+    {
+      "seasonTeamId": 451702,
+      "teamCompetitionId": 451702,
+      "teamPermanentId": 159530,
+      "teamname": "FKB Emmerich",
+      "clubId": 488
+    },
+    {
+      "seasonTeamId": 451704,
+      "teamCompetitionId": 451704,
+      "teamPermanentId": 159171,
+      "teamname": "Rheydter TV",
+      "clubId": 4270
+    },
+    {
+      "seasonTeamId": 451711,
+      "teamCompetitionId": 451711,
+      "teamPermanentId": 167053,
+      "teamname": "TV Lobberich",
+      "clubId": 2301
+    },
+    {
+      "seasonTeamId": 451703,
+      "teamCompetitionId": 451703,
+      "teamPermanentId": 162021,
+      "teamname": "Hülser SV 2",
+      "clubId": 1485
+    },
+    {
+      "seasonTeamId": 451715,
+      "teamCompetitionId": 451715,
+      "teamPermanentId": 159534,
+      "teamname": "TV Goch",
+      "clubId": 400
+    },
+    {
+      "seasonTeamId": 451706,
+      "teamCompetitionId": 451706,
+      "teamPermanentId": 159172,
+      "teamname": "Sportclub Krefeld 3",
+      "clubId": 1621
+    },
+    {
+      "seasonTeamId": 451712,
+      "teamCompetitionId": 451712,
+      "teamPermanentId": 159177,
+      "teamname": "VfL Merkur Kleve",
+      "clubId": 1366
+    },
+    {
+      "seasonTeamId": 451714,
+      "teamCompetitionId": 451714,
+      "teamPermanentId": 319171,
+      "teamname": "Mönchengladbacher TV",
+      "clubId": 249
+    },
+    {
+      "seasonTeamId": 451716,
+      "teamCompetitionId": 451716,
+      "teamPermanentId": 159552,
+      "teamname": "BG Kamp-Lintfort 3",
+      "clubId": 649
+    }
+  ],
+  "matches": [
+    {
+      "matchId": 2857550,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 1,
+      "kickoffDate": "2026-09-19",
+      "kickoffTime": "16:00",
+      "result": "52:68",
+      "resultConfirmed": true,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451710,
+        "teamCompetitionId": 451710,
+        "teamPermanentId": 275043,
+        "teamname": "TV Breyell",
+        "clubId": 2040
+      },
+      "guestTeam": {
+        "seasonTeamId": 451709,
+        "teamCompetitionId": 451709,
+        "teamPermanentId": 316184,
+        "teamname": "TSV Kaldenkirchen Basketball",
+        "clubId": 4969
+      }
+    },
+    {
+      "matchId": 2857548,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 1,
+      "kickoffDate": "2026-09-20",
+      "kickoffTime": "13:30",
+      "result": "71:61",
+      "resultConfirmed": true,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451708,
+        "teamCompetitionId": 451708,
+        "teamPermanentId": 168918,
+        "teamname": "SpVg Odenkirchen 2",
+        "clubId": 447
+      },
+      "guestTeam": {
+        "seasonTeamId": 451702,
+        "teamCompetitionId": 451702,
+        "teamPermanentId": 159530,
+        "teamname": "FKB Emmerich",
+        "clubId": 488
+      }
+    },
+    {
+      "matchId": 2857552,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 1,
+      "kickoffDate": "2026-09-20",
+      "kickoffTime": "14:30",
+      "result": "73:44",
+      "resultConfirmed": true,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451704,
+        "teamCompetitionId": 451704,
+        "teamPermanentId": 159171,
+        "teamname": "Rheydter TV",
+        "clubId": 4270
+      },
+      "guestTeam": {
+        "seasonTeamId": 451711,
+        "teamCompetitionId": 451711,
+        "teamPermanentId": 167053,
+        "teamname": "TV Lobberich",
+        "clubId": 2301
+      }
+    },
+    {
+      "matchId": 2857558,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 1,
+      "kickoffDate": "2026-09-20",
+      "kickoffTime": "16:00",
+      "result": "108:41",
+      "resultConfirmed": true,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451703,
+        "teamCompetitionId": 451703,
+        "teamPermanentId": 162021,
+        "teamname": "Hülser SV 2",
+        "clubId": 1485
+      },
+      "guestTeam": {
+        "seasonTeamId": 451715,
+        "teamCompetitionId": 451715,
+        "teamPermanentId": 159534,
+        "teamname": "TV Goch",
+        "clubId": 400
+      }
+    },
+    {
+      "matchId": 2857554,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 1,
+      "kickoffDate": "2026-09-20",
+      "kickoffTime": "18:00",
+      "result": "67:70",
+      "resultConfirmed": true,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451706,
+        "teamCompetitionId": 451706,
+        "teamPermanentId": 159172,
+        "teamname": "Sportclub Krefeld 3",
+        "clubId": 1621
+      },
+      "guestTeam": {
+        "seasonTeamId": 451712,
+        "teamCompetitionId": 451712,
+        "teamPermanentId": 159177,
+        "teamname": "VfL Merkur Kleve",
+        "clubId": 1366
+      }
+    },
+    {
+      "matchId": 2857569,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 2,
+      "kickoffDate": "2026-09-26",
+      "kickoffTime": "18:00",
+      "result": "42:51",
+      "resultConfirmed": true,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451715,
+        "teamCompetitionId": 451715,
+        "teamPermanentId": 159534,
+        "teamname": "TV Goch",
+        "clubId": 400
+      },
+      "guestTeam": {
+        "seasonTeamId": 451708,
+        "teamCompetitionId": 451708,
+        "teamPermanentId": 168918,
+        "teamname": "SpVg Odenkirchen 2",
+        "clubId": 447
+      }
+    },
+    {
+      "matchId": 2857562,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 2,
+      "kickoffDate": "2026-09-26",
+      "kickoffTime": "20:00",
+      "result": "82:72",
+      "resultConfirmed": true,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451712,
+        "teamCompetitionId": 451712,
+        "teamPermanentId": 159177,
+        "teamname": "VfL Merkur Kleve",
+        "clubId": 1366
+      },
+      "guestTeam": {
+        "seasonTeamId": 451704,
+        "teamCompetitionId": 451704,
+        "teamPermanentId": 159171,
+        "teamname": "Rheydter TV",
+        "clubId": 4270
+      }
+    },
+    {
+      "matchId": 2857560,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 2,
+      "kickoffDate": "2026-09-27",
+      "kickoffTime": "16:30",
+      "result": "57:51",
+      "resultConfirmed": true,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451714,
+        "teamCompetitionId": 451714,
+        "teamPermanentId": 319171,
+        "teamname": "Mönchengladbacher TV",
+        "clubId": 249
+      },
+      "guestTeam": {
+        "seasonTeamId": 451706,
+        "teamCompetitionId": 451706,
+        "teamPermanentId": 159172,
+        "teamname": "Sportclub Krefeld 3",
+        "clubId": 1621
+      }
+    },
+    {
+      "matchId": 2857565,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 2,
+      "kickoffDate": "2026-09-27",
+      "kickoffTime": "18:00",
+      "result": "46:61",
+      "resultConfirmed": true,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451711,
+        "teamCompetitionId": 451711,
+        "teamPermanentId": 167053,
+        "teamname": "TV Lobberich",
+        "clubId": 2301
+      },
+      "guestTeam": {
+        "seasonTeamId": 451710,
+        "teamCompetitionId": 451710,
+        "teamPermanentId": 275043,
+        "teamname": "TV Breyell",
+        "clubId": 2040
+      }
+    },
+    {
+      "matchId": 2857567,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 2,
+      "kickoffDate": "2026-09-27",
+      "kickoffTime": "18:00",
+      "result": "79:68",
+      "resultConfirmed": true,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451709,
+        "teamCompetitionId": 451709,
+        "teamPermanentId": 316184,
+        "teamname": "TSV Kaldenkirchen Basketball",
+        "clubId": 4969
+      },
+      "guestTeam": {
+        "seasonTeamId": 451703,
+        "teamCompetitionId": 451703,
+        "teamPermanentId": 162021,
+        "teamname": "Hülser SV 2",
+        "clubId": 1485
+      }
+    },
+    {
+      "matchId": 2857571,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 2,
+      "kickoffDate": "2026-09-27",
+      "kickoffTime": "18:00",
+      "result": "62:44",
+      "resultConfirmed": true,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451702,
+        "teamCompetitionId": 451702,
+        "teamPermanentId": 159530,
+        "teamname": "FKB Emmerich",
+        "clubId": 488
+      },
+      "guestTeam": {
+        "seasonTeamId": 451716,
+        "teamCompetitionId": 451716,
+        "teamPermanentId": 159552,
+        "teamname": "BG Kamp-Lintfort 3",
+        "clubId": 649
+      }
+    },
+    {
+      "matchId": 2857575,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 3,
+      "kickoffDate": "2026-10-03",
+      "kickoffTime": "16:00",
+      "result": null,
+      "resultConfirmed": false,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451710,
+        "teamCompetitionId": 451710,
+        "teamPermanentId": 275043,
+        "teamname": "TV Breyell",
+        "clubId": 2040
+      },
+      "guestTeam": {
+        "seasonTeamId": 451712,
+        "teamCompetitionId": 451712,
+        "teamPermanentId": 159177,
+        "teamname": "VfL Merkur Kleve",
+        "clubId": 1366
+      }
+    },
+    {
+      "matchId": 2857573,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 3,
+      "kickoffDate": "2026-10-04",
+      "kickoffTime": "13:30",
+      "result": null,
+      "resultConfirmed": false,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451708,
+        "teamCompetitionId": 451708,
+        "teamPermanentId": 168918,
+        "teamname": "SpVg Odenkirchen 2",
+        "clubId": 447
+      },
+      "guestTeam": {
+        "seasonTeamId": 451716,
+        "teamCompetitionId": 451716,
+        "teamPermanentId": 159552,
+        "teamname": "BG Kamp-Lintfort 3",
+        "clubId": 649
+      }
+    },
+    {
+      "matchId": 2857577,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 3,
+      "kickoffDate": "2026-10-04",
+      "kickoffTime": "14:30",
+      "result": null,
+      "resultConfirmed": false,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451704,
+        "teamCompetitionId": 451704,
+        "teamPermanentId": 159171,
+        "teamname": "Rheydter TV",
+        "clubId": 4270
+      },
+      "guestTeam": {
+        "seasonTeamId": 451714,
+        "teamCompetitionId": 451714,
+        "teamPermanentId": 319171,
+        "teamname": "Mönchengladbacher TV",
+        "clubId": 249
+      }
+    },
+    {
+      "matchId": 2857583,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 3,
+      "kickoffDate": "2026-10-04",
+      "kickoffTime": "16:00",
+      "result": null,
+      "resultConfirmed": false,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451703,
+        "teamCompetitionId": 451703,
+        "teamPermanentId": 162021,
+        "teamname": "Hülser SV 2",
+        "clubId": 1485
+      },
+      "guestTeam": {
+        "seasonTeamId": 451711,
+        "teamCompetitionId": 451711,
+        "teamPermanentId": 167053,
+        "teamname": "TV Lobberich",
+        "clubId": 2301
+      }
+    },
+    {
+      "matchId": 2857579,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 3,
+      "kickoffDate": "2026-10-04",
+      "kickoffTime": "18:00",
+      "result": null,
+      "resultConfirmed": false,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451706,
+        "teamCompetitionId": 451706,
+        "teamPermanentId": 159172,
+        "teamname": "Sportclub Krefeld 3",
+        "clubId": 1621
+      },
+      "guestTeam": {
+        "seasonTeamId": 451702,
+        "teamCompetitionId": 451702,
+        "teamPermanentId": 159530,
+        "teamname": "FKB Emmerich",
+        "clubId": 488
+      }
+    },
+    {
+      "matchId": 2857581,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 3,
+      "kickoffDate": "2026-10-04",
+      "kickoffTime": "18:00",
+      "result": null,
+      "resultConfirmed": false,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451715,
+        "teamCompetitionId": 451715,
+        "teamPermanentId": 159534,
+        "teamname": "TV Goch",
+        "clubId": 400
+      },
+      "guestTeam": {
+        "seasonTeamId": 451709,
+        "teamCompetitionId": 451709,
+        "teamPermanentId": 316184,
+        "teamname": "TSV Kaldenkirchen Basketball",
+        "clubId": 4969
+      }
+    },
+    {
+      "matchId": 2857593,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 4,
+      "kickoffDate": "2026-10-09",
+      "kickoffTime": "20:30",
+      "result": null,
+      "resultConfirmed": false,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451716,
+        "teamCompetitionId": 451716,
+        "teamPermanentId": 159552,
+        "teamname": "BG Kamp-Lintfort 3",
+        "clubId": 649
+      },
+      "guestTeam": {
+        "seasonTeamId": 451706,
+        "teamCompetitionId": 451706,
+        "teamPermanentId": 159172,
+        "teamname": "Sportclub Krefeld 3",
+        "clubId": 1621
+      }
+    },
+    {
+      "matchId": 2857587,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 4,
+      "kickoffDate": "2026-10-10",
+      "kickoffTime": "20:00",
+      "result": null,
+      "resultConfirmed": false,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451712,
+        "teamCompetitionId": 451712,
+        "teamPermanentId": 159177,
+        "teamname": "VfL Merkur Kleve",
+        "clubId": 1366
+      },
+      "guestTeam": {
+        "seasonTeamId": 451703,
+        "teamCompetitionId": 451703,
+        "teamPermanentId": 162021,
+        "teamname": "Hülser SV 2",
+        "clubId": 1485
+      }
+    },
+    {
+      "matchId": 2857585,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 4,
+      "kickoffDate": "2026-10-11",
+      "kickoffTime": "16:30",
+      "result": null,
+      "resultConfirmed": false,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451714,
+        "teamCompetitionId": 451714,
+        "teamPermanentId": 319171,
+        "teamname": "Mönchengladbacher TV",
+        "clubId": 249
+      },
+      "guestTeam": {
+        "seasonTeamId": 451710,
+        "teamCompetitionId": 451710,
+        "teamPermanentId": 275043,
+        "teamname": "TV Breyell",
+        "clubId": 2040
+      }
+    },
+    {
+      "matchId": 2857589,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 4,
+      "kickoffDate": "2026-10-11",
+      "kickoffTime": "18:00",
+      "result": null,
+      "resultConfirmed": false,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451711,
+        "teamCompetitionId": 451711,
+        "teamPermanentId": 167053,
+        "teamname": "TV Lobberich",
+        "clubId": 2301
+      },
+      "guestTeam": {
+        "seasonTeamId": 451715,
+        "teamCompetitionId": 451715,
+        "teamPermanentId": 159534,
+        "teamname": "TV Goch",
+        "clubId": 400
+      }
+    },
+    {
+      "matchId": 2857591,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 4,
+      "kickoffDate": "2026-10-11",
+      "kickoffTime": "18:00",
+      "result": null,
+      "resultConfirmed": false,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451709,
+        "teamCompetitionId": 451709,
+        "teamPermanentId": 316184,
+        "teamname": "TSV Kaldenkirchen Basketball",
+        "clubId": 4969
+      },
+      "guestTeam": {
+        "seasonTeamId": 451708,
+        "teamCompetitionId": 451708,
+        "teamPermanentId": 168918,
+        "teamname": "SpVg Odenkirchen 2",
+        "clubId": 447
+      }
+    },
+    {
+      "matchId": 2857595,
+      "ligaId": 54610,
+      "seasonId": 2026,
+      "matchDay": 4,
+      "kickoffDate": "2026-10-11",
+      "kickoffTime": "18:00",
+      "result": null,
+      "resultConfirmed": false,
+      "cancelled": false,
+      "homeTeam": {
+        "seasonTeamId": 451702,
+        "teamCompetitionId": 451702,
+        "teamPermanentId": 159530,
+        "teamname": "FKB Emmerich",
+        "clubId": 488
+      },
+      "guestTeam": {
+        "seasonTeamId": 451704,
+        "teamCompetitionId": 451704,
+        "teamPermanentId": 159171,
+        "teamname": "Rheydter TV",
+        "clubId": 4270
+      }
+    }
+  ],
+  "standings": [
+    {
+      "rank": 1,
+      "teamPermanentId": 316184,
+      "games": 2,
+      "wins": 2,
+      "losses": 0,
+      "pointsFor": 147,
+      "pointsAgainst": 120,
+      "pointDifference": 27
+    },
+    {
+      "rank": 2,
+      "teamPermanentId": 168918,
+      "games": 2,
+      "wins": 2,
+      "losses": 0,
+      "pointsFor": 122,
+      "pointsAgainst": 103,
+      "pointDifference": 19
+    },
+    {
+      "rank": 3,
+      "teamPermanentId": 319171,
+      "games": 2,
+      "wins": 2,
+      "losses": 0,
+      "pointsFor": 120,
+      "pointsAgainst": 105,
+      "pointDifference": 15
+    },
+    {
+      "rank": 4,
+      "teamPermanentId": 159177,
+      "games": 2,
+      "wins": 2,
+      "losses": 0,
+      "pointsFor": 152,
+      "pointsAgainst": 139,
+      "pointDifference": 13
+    },
+    {
+      "rank": 5,
+      "teamPermanentId": 162021,
+      "games": 2,
+      "wins": 1,
+      "losses": 1,
+      "pointsFor": 176,
+      "pointsAgainst": 120,
+      "pointDifference": 56
+    },
+    {
+      "rank": 6,
+      "teamPermanentId": 159171,
+      "games": 2,
+      "wins": 1,
+      "losses": 1,
+      "pointsFor": 145,
+      "pointsAgainst": 126,
+      "pointDifference": 19
+    },
+    {
+      "rank": 7,
+      "teamPermanentId": 159530,
+      "games": 2,
+      "wins": 1,
+      "losses": 1,
+      "pointsFor": 123,
+      "pointsAgainst": 115,
+      "pointDifference": 8
+    },
+    {
+      "rank": 8,
+      "teamPermanentId": 275043,
+      "games": 2,
+      "wins": 1,
+      "losses": 1,
+      "pointsFor": 113,
+      "pointsAgainst": 114,
+      "pointDifference": -1
+    },
+    {
+      "rank": 9,
+      "teamPermanentId": 159172,
+      "games": 2,
+      "wins": 0,
+      "losses": 2,
+      "pointsFor": 118,
+      "pointsAgainst": 127,
+      "pointDifference": -9
+    },
+    {
+      "rank": 10,
+      "teamPermanentId": 159552,
+      "games": 2,
+      "wins": 0,
+      "losses": 2,
+      "pointsFor": 98,
+      "pointsAgainst": 125,
+      "pointDifference": -27
+    },
+    {
+      "rank": 11,
+      "teamPermanentId": 167053,
+      "games": 2,
+      "wins": 0,
+      "losses": 2,
+      "pointsFor": 90,
+      "pointsAgainst": 134,
+      "pointDifference": -44
+    },
+    {
+      "rank": 12,
+      "teamPermanentId": 159534,
+      "games": 2,
+      "wins": 0,
+      "losses": 2,
+      "pointsFor": 83,
+      "pointsAgainst": 159,
+      "pointDifference": -76
+    }
+  ]
+}
