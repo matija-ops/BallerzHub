@@ -5,6 +5,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import "./index.css";
 import App from "./App.tsx";
 import { ThemeProvider } from "@/components/theme-provider.tsx";
+import "./i18n";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

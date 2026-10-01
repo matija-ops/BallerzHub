@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import AppLayout from "@/layouts/AppLayout";
+import LanguageSync from "@/components/LanguageSync";
 
 import CourtDetailPage from "./pages/CourtDetailPage";
 import CourtsPage from "@/pages/CourtsPage";
@@ -48,6 +49,7 @@ import AuthCallbackPage from "@/pages/AuthCallbackPage";
 function App() {
   return (
     <BrowserRouter>
+      <LanguageSync />
       <Routes>
         <Route element={<AppLayout />}>
           {/* Startseite */}

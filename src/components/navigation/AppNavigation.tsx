@@ -23,6 +23,8 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
 import { supabase } from "@/lib/supabase";
+import i18n from "@/i18n";
+import { useTranslation } from "react-i18next";
 
 import NavigationItem from "./NavigationItem";
 import NavigationTrigger from "./NavigationTrigger";
@@ -34,6 +36,7 @@ type AppNavigationProps = {
 
 function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [userId, setUserId] = useState<string | null>(null);
   const [firstName, setFirstName] = useState<string | null>(null);
@@ -82,7 +85,7 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!isMounted) {
         return;
       }
@@ -127,6 +130,12 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
   };
 
   const isLoggedIn = Boolean(userId);
+  const currentLanguage = i18n.language.startsWith("en") ? "en" : "de";
+  const changeLanguage = (language: "de" | "en") => {
+    void i18n.changeLanguage(language);
+    localStorage.setItem("ballerzhub-language", language);
+    document.documentElement.lang = language;
+  };
 
   return (
     <>
@@ -199,7 +208,7 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
                   type="button"
                   variant="ghost"
                   size="icon-sm"
-                  aria-label="Navigation schließen"
+                  aria-label={t("closeNavigation")}
                   className="absolute top-4 right-4 z-10"
                 />
               }
@@ -210,7 +219,7 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
           </SheetHeader>
 
           <nav
-            aria-label="Hauptnavigation"
+            aria-label={t("mainNavigation")}
             className="flex flex-1 flex-col overflow-y-auto px-3 py-4"
           >
             <div className="space-y-1">
@@ -220,7 +229,7 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
                 end
                 icon={Map}
                 title="Courts"
-                description="Basketballplätze finden"
+                description={t("findCourts")}
                 onNavigate={closeNavigation}
               />
 
@@ -229,7 +238,7 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
                 to="/events"
                 icon={CalendarDays}
                 title="Events"
-                description="Spiele & Turniere"
+                description={t("eventsDescription")}
                 onNavigate={closeNavigation}
               />
 
@@ -297,12 +306,11 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
 
                   <span className="min-w-0 flex-1">
                     <span className="block text-base font-semibold">
-                      Stadt & Kommune
+                      {t("cityAndMunicipality")}
                     </span>
 
                     <span className="block text-sm text-muted-foreground">
-                      Courts & Meldungen
-                      <wbr /> verwalten
+                      {t("manageCourtsAndReports")}
                     </span>
                   </span>
 
@@ -328,7 +336,7 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
                     <NavigationItem
                       to="/municipality/dashboard"
                       icon={Building2}
-                      title="Reports"
+                      title={t("reports")}
                       onNavigate={closeNavigation}
                       nested
                     />
@@ -347,8 +355,8 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
                 <NavigationItem
                   to="/profile"
                   icon={UserRound}
-                  title={`Hi ${firstName || "Basketballer"} 👋`}
-                  description="Mein Profil"
+                  title={`Hi ${firstName || t("basketballer")} 👋`}
+                  description={t("myProfile")}
                   onNavigate={closeNavigation}
                 />
 
@@ -362,17 +370,45 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
                     <LogOut className="size-5" />
                   </span>
 
-                  <span>Abmelden</span>
+                  <span>{t("logout")}</span>
                 </Button>
               </div>
             ) : (
               <NavigationItem
                 to="/login"
                 icon={UserRound}
-                title="Login / Registrieren"
+                title={t("loginRegister")}
                 onNavigate={closeNavigation}
               />
             )}
+
+            <div className="mt-4 rounded-xl bg-muted/60 p-3">
+              <p className="mb-2 text-xs font-medium text-muted-foreground">
+                {t("language")}
+              </p>
+              <div className="grid grid-cols-2 gap-2" role="group" aria-label={t("language")}>
+                <Button
+                  type="button"
+                  variant={currentLanguage === "de" ? "default" : "outline"}
+                  className="text-xl"
+                  onClick={() => changeLanguage("de")}
+                  aria-label={t("german")}
+                  aria-pressed={currentLanguage === "de"}
+                >
+                  <span aria-hidden="true">🇩🇪</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant={currentLanguage === "en" ? "default" : "outline"}
+                  className="text-xl"
+                  onClick={() => changeLanguage("en")}
+                  aria-label={t("english")}
+                  aria-pressed={currentLanguage === "en"}
+                >
+                  <span aria-hidden="true">🇺🇸</span>
+                </Button>
+              </div>
+            </div>
           </nav>
         </SheetContent>
       </Sheet>
