@@ -10,11 +10,21 @@ type StandingsTableProps = {
 
 function StandingsTable({ standings }: StandingsTableProps) {
   const navigate = useNavigate();
+
   return (
     <Card className="mt-4 overflow-hidden">
       <CardContent className="p-0">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[600px] text-sm">
+          <table className="w-full min-w-[600px] table-fixed text-sm">
+            <colgroup>
+              <col className="w-16" />
+              <col className="w-[52%]" />
+              <col />
+              <col />
+              <col />
+              <col />
+            </colgroup>
+
             <thead className="border-b bg-muted/40">
               <tr>
                 <th className="px-4 py-3 text-left font-medium">Platz</th>
@@ -40,18 +50,29 @@ function StandingsTable({ standings }: StandingsTableProps) {
 
                   <td className="px-4 py-4">
                     {standing.team ? (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={() =>
-                          navigate(
-                            `/clubs/${standing.team!.club_id}/teams/${standing.team!.id}`
-                          )
-                        }
-                        className="h-auto justify-start text-left whitespace-normal text-primary hover:bg-primary/10"
-                      >
-                        {standing.team.name}
-                      </Button>
+                      standing.team.website_url ? (
+                        <a
+                          href={standing.team.website_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block truncate font-medium text-primary underline-offset-4 hover:underline"
+                        >
+                          {standing.team.name}
+                        </a>
+                      ) : (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          onClick={() =>
+                            navigate(
+                              `/clubs/${standing.team!.club_id}/teams/${standing.team!.id}`
+                            )
+                          }
+                          className="h-auto w-full justify-start px-0 text-left whitespace-normal text-primary hover:bg-primary/10"
+                        >
+                          {standing.team.name}
+                        </Button>
+                      )
                     ) : (
                       <span className="text-muted-foreground">
                         Mannschaft nicht zugeordnet

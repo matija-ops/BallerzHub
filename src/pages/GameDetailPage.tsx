@@ -15,7 +15,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import { supabase } from "@/lib/supabase";
 import type { Tables } from "@/types/supabase.types";
-import GameQuarterScores from "@/components/games/GameQuarterScores";
 
 type Game = Tables<"games">;
 type Team = Tables<"teams">;
@@ -223,10 +222,6 @@ function GameDetailPage() {
           </div>
         </CardContent>
       </Card>
-      <GameQuarterScores
-        homeTeamName={homeTeam?.name ?? "Heimteam"}
-        awayTeamName={awayTeam?.name ?? "Auswärtsteam"}
-      />
     </main>
   );
 }

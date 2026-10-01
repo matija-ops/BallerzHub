@@ -282,6 +282,16 @@
   filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
+/* Keep the map search field translucent, including browser autofill styles. */
+.court-search-input,
+.court-search-input:focus,
+.court-search-input:-webkit-autofill,
+.court-search-input:-webkit-autofill:hover,
+.court-search-input:-webkit-autofill:focus {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+}
+
 /* Court location marker: the basketball remains the pin's head. */
 .court-pin-icon {
   background: transparent;

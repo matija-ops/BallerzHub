@@ -80,6 +80,16 @@ function App() {
           {/* Ligen */}
           <Route path="/leagues" element={<LeaguesPage />} />
 
+          <Route
+            path="/leagues/easycredit-bbl"
+            element={<LeaguesPage />}
+          />
+
+          <Route
+            path="/leagues/bezirksliga-herren-niers"
+            element={<LeaguesPage />}
+          />
+
           <Route path="/leagues/:leagueId" element={<LeagueDetailPage />} />
 
           {/* Spiele */}

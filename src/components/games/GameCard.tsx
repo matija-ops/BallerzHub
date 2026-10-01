@@ -9,6 +9,8 @@ type GameCardProps = {
   upcoming?: boolean;
 };
 
+type GameTeam = LeagueGame["home_team"];
+
 function formatDate(date: string) {
   return new Intl.DateTimeFormat("de-DE", {
     dateStyle: "medium",
@@ -23,6 +25,40 @@ function formatTime(time: string | null) {
 
 function GameCard({ game, upcoming = false }: GameCardProps) {
   const navigate = useNavigate();
+
+  function renderTeam(team: GameTeam, alignment: "left" | "right") {
+    const alignmentClasses =
+      alignment === "left"
+        ? "justify-start text-left"
+        : "justify-end text-right";
+
+    if (team.website_url) {
+      return (
+        <Button
+          type="button"
+          variant="ghost"
+          asChild
+          className={`h-auto whitespace-normal text-primary hover:bg-primary/10 ${alignmentClasses}`}
+        >
+          <a href={team.website_url} target="_blank" rel="noopener noreferrer">
+            {team.name}
+          </a>
+        </Button>
+      );
+    }
+
+    return (
+      <Button
+        type="button"
+        variant="ghost"
+        onClick={() => navigate(`/clubs/${team.club_id}/teams/${team.id}`)}
+        className={`h-auto whitespace-normal text-primary hover:bg-primary/10 ${alignmentClasses}`}
+      >
+        {team.name}
+      </Button>
+    );
+  }
+
   return (
     <Card>
       <CardContent className="p-5">
@@ -32,35 +68,15 @@ function GameCard({ game, upcoming = false }: GameCardProps) {
         </div>
 
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={() =>
-              navigate(
-                `/clubs/${game.home_team.club_id}/teams/${game.home_team.id}`
-              )
-            }
-            className="h-auto justify-start text-left whitespace-normal text-primary hover:bg-primary/10"
-          >
-            {game.home_team.name}
-          </Button>
+          {renderTeam(game.home_team, "left")}
 
           <div className="text-center text-sm font-semibold text-muted-foreground">
-            {upcoming ? "vs." : `${game.home_score} : ${game.away_score}`}
+            {upcoming
+              ? "vs."
+              : `${game.home_score ?? "–"} : ${game.away_score ?? "–"}`}
           </div>
 
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={() =>
-              navigate(
-                `/clubs/${game.away_team.club_id}/teams/${game.away_team.id}`
-              )
-            }
-            className="h-auto justify-end text-right whitespace-normal text-primary hover:bg-primary/10"
-          >
-            {game.away_team.name}
-          </Button>
+          {renderTeam(game.away_team, "right")}
         </div>
       </CardContent>
     </Card>

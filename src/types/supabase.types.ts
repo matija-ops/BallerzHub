@@ -1297,7 +1297,7 @@ export type Database = {
       teams: {
         Row: {
           age_group: string;
-          club_id: string;
+          club_id: string | null;
           created_at: string | null;
           external_permanent_team_id: number | null;
           external_season_team_id: number | null;
@@ -1308,10 +1308,11 @@ export type Database = {
           league_id: string;
           name: string;
           updated_at: string | null;
+          website_url: string | null;
         };
         Insert: {
           age_group: string;
-          club_id: string;
+          club_id?: string | null;
           created_at?: string | null;
           external_permanent_team_id?: number | null;
           external_season_team_id?: number | null;
@@ -1322,10 +1323,11 @@ export type Database = {
           league_id?: string;
           name: string;
           updated_at?: string | null;
+          website_url?: string | null;
         };
         Update: {
           age_group?: string;
-          club_id?: string;
+          club_id?: string | null;
           created_at?: string | null;
           external_permanent_team_id?: number | null;
           external_season_team_id?: number | null;
@@ -1336,6 +1338,7 @@ export type Database = {
           league_id?: string;
           name?: string;
           updated_at?: string | null;
+          website_url?: string | null;
         };
         Relationships: [
           {

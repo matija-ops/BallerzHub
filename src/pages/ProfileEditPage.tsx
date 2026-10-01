@@ -75,6 +75,9 @@ function ProfileEditPage() {
   const [error, setError] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
 
+  const selectedClubName = clubs.find((club) => club.id === clubId)?.name;
+  const selectedTeamName = teams.find((team) => team.id === teamId)?.name;
+
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
@@ -629,7 +632,9 @@ function ProfileEditPage() {
                   onValueChange={handleClubChange}
                 >
                   <SelectTrigger id="club">
-                    <SelectValue placeholder="Verein auswählen" />
+                    <SelectValue placeholder="Verein auswählen">
+                      {selectedClubName}
+                    </SelectValue>
                   </SelectTrigger>
 
                   <SelectContent>
@@ -663,7 +668,9 @@ function ProfileEditPage() {
                             ? "Mannschaften werden geladen..."
                             : "Mannschaft auswählen"
                       }
-                    />
+                    >
+                      {selectedTeamName}
+                    </SelectValue>
                   </SelectTrigger>
 
                   <SelectContent>

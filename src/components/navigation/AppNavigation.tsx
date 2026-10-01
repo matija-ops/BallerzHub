@@ -9,7 +9,6 @@ import {
   Map,
   Table2,
   UserRound,
-  Users,
   X,
 } from "lucide-react";
 
@@ -151,15 +150,44 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
                 viewBox="0 0 48 52"
                 className="h-12 w-11 shrink-0 overflow-visible"
               >
-                <ellipse className="brand-ball-shadow" cx="24" cy="48" rx="13" ry="3" fill="currentColor" opacity="0.18" />
+                <ellipse
+                  className="brand-ball-shadow"
+                  cx="24"
+                  cy="48"
+                  rx="13"
+                  ry="3"
+                  fill="currentColor"
+                  opacity="0.18"
+                />
                 <g className="brand-ball-bounce">
                   <g>
-                    <circle cx="24" cy="27" r="17" fill="#ff852b" stroke="#382014" strokeWidth="2.5" />
-                    <path d="M12 38a17 17 0 0 0 27-19 17 17 0 0 1-27 19" fill="#e85c12" />
-                    <g fill="none" stroke="#382014" strokeWidth="2" strokeLinecap="round">
+                    <circle
+                      cx="24"
+                      cy="27"
+                      r="17"
+                      fill="#ff852b"
+                      stroke="#382014"
+                      strokeWidth="2.5"
+                    />
+                    <path
+                      d="M12 38a17 17 0 0 0 27-19 17 17 0 0 1-27 19"
+                      fill="#e85c12"
+                    />
+                    <g
+                      fill="none"
+                      stroke="#382014"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    >
                       <path d="M23 10c-11 5-16 23-7 32M7.2 28c9 3 24 3 33.5-2M9 19c-1 11 8 9 17 2 5-4 9-6 12-5M10 36c6-6 17 10 26 3" />
                     </g>
-                    <path d="M14 20q2-5 7-6" fill="none" stroke="#ffe0a3" strokeWidth="3" strokeLinecap="round" />
+                    <path
+                      d="M14 20q2-5 7-6"
+                      fill="none"
+                      stroke="#ffe0a3"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                    />
                   </g>
                 </g>
               </svg>
@@ -205,7 +233,7 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
                 onNavigate={closeNavigation}
               />
 
-              {/* Vereine */}
+              {/* 5 vs. 5 */}
               <div className="space-y-1">
                 <Button
                   type="button"
@@ -220,11 +248,7 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
 
                   <span className="min-w-0 flex-1">
                     <span className="block text-base font-semibold">
-                      Vereine
-                    </span>
-
-                    <span className="block text-sm text-muted-foreground">
-                      Vereine entdecken
+                      5 vs. 5
                     </span>
                   </span>
 
@@ -237,29 +261,20 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
 
                 {isClubsOpen && (
                   <div className="space-y-1">
-                    {/* Vereine */}
+                    {/* easycreditBBL */}
                     <NavigationItem
-                      to="/clubs"
-                      icon={Building}
-                      title="Vereine"
-                      onNavigate={closeNavigation}
-                      nested
-                    />
-
-                    {/* Teams */}
-                    <NavigationItem
-                      to="/teams"
-                      icon={Users}
-                      title="Teams"
-                      onNavigate={closeNavigation}
-                      nested
-                    />
-
-                    {/* Tabellen */}
-                    <NavigationItem
-                      to="/leagues"
+                      to="/leagues/f88f2e61-9bb0-4e8f-9b5b-e563db6b0cbf"
                       icon={Table2}
-                      title="Tabellen"
+                      title="easyCreditBBL"
+                      onNavigate={closeNavigation}
+                      nested
+                    />
+
+                    {/* Bezirksliga Herren Niers */}
+                    <NavigationItem
+                      to="/leagues/c2a39c5b-ecab-475b-b620-6a4f2da8faba"
+                      icon={Table2}
+                      title="Bezirksliga Herren Niers"
                       onNavigate={closeNavigation}
                       nested
                     />
