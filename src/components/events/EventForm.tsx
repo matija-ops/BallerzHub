@@ -322,10 +322,13 @@ function EventForm({ event, isSubmitting, onSubmit }: EventFormProps) {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+    <form
+      onSubmit={form.handleSubmit(handleSubmit)}
+      className="space-y-6 [&_label]:mb-6 [&_label]:block"
+    >
       {/* Eventname */}
 
-      <div className="space-y-3">
+      <div className="space-y-8">
         <label htmlFor="event-name" className="text-sm font-medium">
           Eventname
         </label>
@@ -346,7 +349,7 @@ function EventForm({ event, isSubmitting, onSubmit }: EventFormProps) {
 
       {/* Beschreibung */}
 
-      <div className="space-y-3">
+      <div className="space-y-8">
         <label htmlFor="event-description" className="text-sm font-medium">
           Beschreibung
         </label>
@@ -368,7 +371,7 @@ function EventForm({ event, isSubmitting, onSubmit }: EventFormProps) {
 
       {/* Kategorie */}
 
-      <div className="space-y-3">
+      <div className="space-y-8">
         <label className="text-sm font-medium">Kategorie</label>
 
         <Select
@@ -407,7 +410,7 @@ function EventForm({ event, isSubmitting, onSubmit }: EventFormProps) {
       {/* Datum + Uhrzeit */}
 
       <div className="grid gap-6 sm:grid-cols-2">
-        <div className="space-y-3">
+        <div className="space-y-8">
           <label htmlFor="event-date" className="text-sm font-medium">
             Datum
           </label>
@@ -426,7 +429,7 @@ function EventForm({ event, isSubmitting, onSubmit }: EventFormProps) {
           )}
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-8">
           <label htmlFor="event-time" className="text-sm font-medium">
             Uhrzeit
           </label>
@@ -448,7 +451,7 @@ function EventForm({ event, isSubmitting, onSubmit }: EventFormProps) {
 
       {/* Ort */}
 
-      <div className="space-y-3">
+      <div className="space-y-8">
         <label htmlFor="event-location" className="text-sm font-medium">
           Ort
         </label>
@@ -469,7 +472,7 @@ function EventForm({ event, isSubmitting, onSubmit }: EventFormProps) {
 
       {/* Court */}
 
-      <div className="space-y-3">
+      <div className="space-y-8">
         <label className="text-sm font-medium">Court</label>
 
         <Select
