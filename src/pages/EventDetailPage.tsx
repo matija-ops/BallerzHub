@@ -144,6 +144,12 @@ function EventDetailPage() {
       setError(null);
       setCourt(null);
 
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setCurrentUserId(user?.id ?? null);
+
       const { data: eventData, error: eventError } = await supabase
         .from("events")
         .select("*")

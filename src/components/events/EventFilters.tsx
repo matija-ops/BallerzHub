@@ -166,7 +166,7 @@ function EventFilters({
     filters.ageGroup !== "all";
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 [&_label]:mb-6 [&_label]:block">
       {/* Desktop */}
       <div className="hidden rounded-xl border p-4 md:block">
         <div className="mb-4 flex items-center justify-between gap-4">

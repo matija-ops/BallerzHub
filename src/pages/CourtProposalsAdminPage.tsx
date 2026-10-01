@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Check, MapPin, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -42,6 +43,7 @@ export default function CourtProposalsAdminPage() {
   >({});
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [municipalitySearch, setMunicipalitySearch] = useState("");
 
   const handleApprove = async (proposal: (typeof proposals)[number]) => {
     const municipalityId = selectedMunicipalities[proposal.id] ?? "";
@@ -172,6 +174,12 @@ export default function CourtProposalsAdminPage() {
                       Kommune für den Court
                     </label>
 
+                    <Input
+                      value={municipalitySearch}
+                      onChange={(event) => setMunicipalitySearch(event.target.value)}
+                      placeholder="Kommune suchen …"
+                    />
+
                     <Select
                       value={selectedMunicipalities[proposal.id] ?? ""}
                       onValueChange={(value) => {
@@ -182,12 +190,18 @@ export default function CourtProposalsAdminPage() {
                       }}
                       disabled={isSubmitting}
                     >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Kommune auswählen" />
-                      </SelectTrigger>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Kommune auswählen" />
+                  </SelectTrigger>
 
-                      <SelectContent>
-                        {municipalities.map((municipality) => (
+                  <SelectContent>
+                        {municipalities
+                          .filter((municipality) =>
+                            municipality.name
+                              .toLocaleLowerCase("de-DE")
+                              .includes(municipalitySearch.toLocaleLowerCase("de-DE"))
+                          )
+                          .map((municipality) => (
                           <SelectItem
                             key={municipality.id}
                             value={municipality.id}
@@ -195,8 +209,9 @@ export default function CourtProposalsAdminPage() {
                             {municipality.name}
                           </SelectItem>
                         ))}
-                      </SelectContent>
-                    </Select>
+                  </SelectContent>
+                </Select>
+
                   </div>
 
                   <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">

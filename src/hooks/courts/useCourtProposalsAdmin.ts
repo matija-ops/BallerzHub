@@ -63,11 +63,27 @@ export function useCourtProposalsAdmin() {
         .eq("status", "pending")
         .order("created_at", { ascending: false });
 
-      const { data: municipalityData, error: municipalityError } =
-        await supabase
+      const municipalityRows: Municipality[] = [];
+      let municipalityError: Error | null = null;
+
+      for (let offset = 0; offset < 10000; offset += 1000) {
+        const { data: page, error: pageError } = await supabase
           .from("municipalities")
           .select("*")
-          .order("name", { ascending: true });
+          .order("name", { ascending: true })
+          .range(offset, offset + 999);
+
+        if (pageError) {
+          municipalityError = pageError;
+          break;
+        }
+
+        municipalityRows.push(...(page ?? []));
+
+        if (!page || page.length < 1000) {
+          break;
+        }
+      }
 
       if (proposalError) {
         throw proposalError;
@@ -79,7 +95,7 @@ export function useCourtProposalsAdmin() {
 
       setProposals((proposalData ?? []) as CourtProposalWithImages[]);
 
-      setMunicipalities(municipalityData ?? []);
+      setMunicipalities(municipalityRows);
     } catch (loadError) {
       console.error(
         "Court-Vorschläge konnten nicht geladen werden:",

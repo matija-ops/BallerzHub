@@ -20,6 +20,34 @@ export function useDeleteEvent() {
         return false;
       }
 
+      const { data: teams, error: teamsError } = await supabase
+        .from("event_teams")
+        .select("id")
+        .eq("event_id", eventId);
+
+      if (teamsError) throw teamsError;
+
+      const teamIds = (teams ?? []).map((team) => team.id);
+
+      if (teamIds.length > 0) {
+        const { error: playersError } = await supabase
+          .from("event_team_players")
+          .delete()
+          .in("event_team_id", teamIds);
+
+        if (playersError) throw playersError;
+      }
+
+      const dependentDeletes = await Promise.all([
+        supabase.from("event_images").delete().eq("event_id", eventId),
+        supabase.from("event_participants").delete().eq("event_id", eventId),
+        supabase.from("event_teams").delete().eq("event_id", eventId),
+      ]);
+
+      const dependentError = dependentDeletes.find((result) => result.error)?.error;
+
+      if (dependentError) throw dependentError;
+
       const { error: supabaseError } = await supabase
         .from("events")
         .delete()

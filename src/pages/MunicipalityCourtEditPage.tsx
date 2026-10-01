@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,8 +21,10 @@ import {
 } from "@/lib/municipality";
 
 import type { Database } from "@/types/supabase.types";
+import { supabase } from "@/lib/supabase";
 
 type Court = Database["public"]["Tables"]["courts"]["Row"];
+type CourtImage = Database["public"]["Tables"]["court_images"]["Row"];
 
 type CourtUpdate = Database["public"]["Tables"]["courts"]["Update"];
 
@@ -30,6 +32,7 @@ const COURT_STATUSES = ["active", "maintenance", "closed"] as const;
 
 export default function MunicipalityCourtEditPage() {
   const { courtId } = useParams<{ courtId: string }>();
+  const navigate = useNavigate();
 
   const [court, setCourt] = useState<Court | null>(null);
 
@@ -41,6 +44,8 @@ export default function MunicipalityCourtEditPage() {
   const [hasLightning, setHasLightning] = useState(false);
   const [isAccessible, setIsAccessible] = useState(false);
   const [status, setStatus] = useState("");
+  const [images, setImages] = useState<CourtImage[]>([]);
+  const [deletedImageIds, setDeletedImageIds] = useState<string[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -62,8 +67,16 @@ export default function MunicipalityCourtEditPage() {
         const municipalityId = await getCurrentMunicipalityId();
 
         const data = await getMunicipalityCourt(municipalityId, courtId);
+        const { data: imageData, error: imageError } = await supabase
+          .from("court_images")
+          .select("*")
+          .eq("court_id", courtId)
+          .order("created_at", { ascending: true });
+
+        if (imageError) throw imageError;
 
         setCourt(data);
+        setImages(imageData ?? []);
 
         setName(data.name);
         setLatitude(String(data.latitude));
@@ -147,6 +160,21 @@ export default function MunicipalityCourtEditPage() {
         updates
       );
 
+      if (deletedImageIds.length > 0) {
+        const { error: imageDeleteError } = await supabase
+          .from("court_images")
+          .delete()
+          .in("id", deletedImageIds)
+          .eq("court_id", courtId);
+
+        if (imageDeleteError) throw imageDeleteError;
+
+        setImages((current) =>
+          current.filter((image) => !deletedImageIds.includes(image.id))
+        );
+        setDeletedImageIds([]);
+      }
+
       setCourt(updatedCourt);
 
       setName(updatedCourt.name);
@@ -193,6 +221,20 @@ export default function MunicipalityCourtEditPage() {
 
   return (
     <div className="p-6">
+      <div className="mb-4 flex flex-wrap gap-3">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => navigate(`/courts/${courtId}`)}
+        >
+          Bilder verwalten
+        </Button>
+
+        <Button type="button" disabled={saving} onClick={handleSubmit}>
+          {saving ? "Speichern..." : "Änderungen speichern"}
+        </Button>
+      </div>
+
       <Card className="mx-auto max-w-2xl">
         <CardHeader>
           <CardTitle>Court bearbeiten</CardTitle>
@@ -202,6 +244,44 @@ export default function MunicipalityCourtEditPage() {
           {error && <p className="text-sm text-destructive">{error}</p>}
 
           {success && <p className="text-sm text-green-600">{success}</p>}
+
+          <div className="space-y-3">
+            <Label>Court-Bilder</Label>
+
+            {images.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                Keine Bilder vorhanden.
+              </p>
+            ) : (
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {images
+                  .filter((image) => !deletedImageIds.includes(image.id))
+                  .map((image) => (
+                  <div key={image.id} className="space-y-2">
+                    <img
+                      src={image.image_url}
+                      alt={`${court.name} – Court-Bild`}
+                      className="aspect-square w-full rounded-lg object-cover"
+                    />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      className="w-full"
+                      onClick={() =>
+                        setDeletedImageIds((current) =>
+                          current.includes(image.id)
+                            ? current
+                            : [...current, image.id]
+                        )
+                      }
+                    >
+                      Bild löschen
+                    </Button>
+                  </div>
+                  ))}
+              </div>
+            )}
+          </div>
 
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>

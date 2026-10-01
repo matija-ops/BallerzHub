@@ -13,6 +13,7 @@ type CourtReview = Tables<"court_reviews">;
 type CourtCheckin = Tables<"court_checkins">;
 type CourtFavorite = Tables<"court_favorites">;
 type CourtReport = Tables<"court_reports">;
+type Event = Tables<"events">;
 
 const COURT_MEDIA_BUCKET = "court_proposals";
 const MAX_COURT_MEDIA = 5;
@@ -23,6 +24,7 @@ export function useCourt(courtId: string) {
   const [reviews, setReviews] = useState<CourtReview[]>([]);
   const [checkins, setCheckins] = useState<CourtCheckin[]>([]);
   const [reports, setReports] = useState<CourtReport[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   const [isFavorite, setIsFavorite] = useState(false);
@@ -62,6 +64,7 @@ export function useCourt(courtId: string) {
         reviewsResult,
         checkinsResult,
         reportsResult,
+        eventsResult,
       ] = await Promise.all([
         supabase.from("courts").select("*").eq("id", courtId).maybeSingle(),
 
@@ -88,6 +91,14 @@ export function useCourt(courtId: string) {
           .select("*")
           .eq("court_id", courtId)
           .order("created_at", { ascending: false }),
+
+        supabase
+          .from("events")
+          .select("*")
+          .eq("court_id", courtId)
+          .order("event_date", { ascending: true })
+          .order("event_time", { ascending: true }),
+
       ]);
 
       if (courtResult.error) {
@@ -108,6 +119,10 @@ export function useCourt(courtId: string) {
 
       if (reportsResult.error) {
         throw reportsResult.error;
+      }
+
+      if (eventsResult.error) {
+        throw eventsResult.error;
       }
 
       let favorite: CourtFavorite | null = null;
@@ -131,10 +146,48 @@ export function useCourt(courtId: string) {
       const courtReports = reportsResult.data ?? [];
 
       setCourt(courtResult.data);
-      setImages(imagesResult.data ?? []);
+      let sourceImages = imagesResult.data ?? [];
+
+      // Ältere Freigaben haben die Vorschlagsbilder nicht in court_images kopiert.
+      // In diesem Fall werden sie über die Koordinaten des freigegebenen Vorschlags
+      // nachgeladen, damit sie weiterhin auf der Court-Seite erscheinen.
+      if (sourceImages.length === 0 && courtResult.data) {
+        const { data: proposalsWithImages } = await supabase
+          .from("court_proposals")
+          .select("id, court_proposal_images(*)")
+          .eq("status", "approved")
+          .gte("latitude", courtResult.data.latitude - 0.00001)
+          .lte("latitude", courtResult.data.latitude + 0.00001)
+          .gte("longitude", courtResult.data.longitude - 0.00001)
+          .lte("longitude", courtResult.data.longitude + 0.00001);
+
+        const proposalImages = (proposalsWithImages ?? []).flatMap(
+          (proposal) => proposal.court_proposal_images ?? []
+        );
+
+        sourceImages = proposalImages.map((image) => ({
+          court_id: courtId,
+          created_at: image.created_at,
+          id: image.id,
+          image_url: image.image_url,
+          media_type: image.media_type,
+          user_id: image.user_id,
+        }));
+      }
+
+      const courtImages = sourceImages.map((image) => ({
+        ...image,
+        image_url: image.image_url.startsWith("http")
+          ? image.image_url
+          : supabase.storage.from(COURT_MEDIA_BUCKET).getPublicUrl(image.image_url)
+              .data.publicUrl,
+      }));
+
+      setImages(courtImages);
       setReviews(reviewsResult.data ?? []);
       setCheckins(activeCheckins);
       setReports(courtReports);
+      setEvents(eventsResult.data ?? []);
 
       setIsCheckedIn(
         user
@@ -595,6 +648,39 @@ export function useCourt(courtId: string) {
     [courtId, isImageUploading]
   );
 
+  const deleteCourtImage = useCallback(
+    async (image: CourtImage): Promise<boolean> => {
+      const { error: deleteError } = await supabase
+        .from("court_images")
+        .delete()
+        .eq("id", image.id)
+        .eq("court_id", courtId);
+
+      if (deleteError) {
+        setImageUploadError(deleteError.message);
+        return false;
+      }
+
+      const marker = "/storage/v1/object/public/";
+      const storagePath = image.image_url.includes(marker)
+        ? image.image_url.slice(image.image_url.indexOf(marker) + marker.length)
+        : image.image_url;
+      const bucketPrefix = `${COURT_MEDIA_BUCKET}/`;
+
+      if (storagePath.startsWith(bucketPrefix)) {
+        await supabase.storage
+          .from(COURT_MEDIA_BUCKET)
+          .remove([storagePath.slice(bucketPrefix.length)]);
+      }
+
+      setImages((currentImages) =>
+        currentImages.filter((currentImage) => currentImage.id !== image.id)
+      );
+      return true;
+    },
+    [courtId]
+  );
+
   const createReview = useCallback(
     async (rating: number, comment: string) => {
       setIsReviewSubmitting(true);
@@ -779,6 +865,7 @@ export function useCourt(courtId: string) {
     reviews,
     checkins,
     reports,
+    events,
     openReports,
     openReportsCount: openReports.length,
     currentUserId,
@@ -806,6 +893,7 @@ export function useCourt(courtId: string) {
     isImageUploading,
     imageUploadError,
     uploadCourtImages,
+    deleteCourtImage,
 
     isLoading,
     error,

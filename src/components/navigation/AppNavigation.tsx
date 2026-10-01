@@ -5,6 +5,7 @@ import {
   Building2,
   CalendarDays,
   ChevronDown,
+  ClipboardCheck,
   LogOut,
   Map,
   Table2,
@@ -328,6 +329,14 @@ function AppNavigation({ isOpen, onOpenChange }: AppNavigationProps) {
                       to="/municipality/courts"
                       icon={Map}
                       title="Courts"
+                      onNavigate={closeNavigation}
+                      nested
+                    />
+
+                    <NavigationItem
+                      to="/admin/court-proposals"
+                      icon={ClipboardCheck}
+                      title="Court-Vorschläge"
                       onNavigate={closeNavigation}
                       nested
                     />

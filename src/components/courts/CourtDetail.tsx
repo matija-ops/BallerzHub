@@ -3,6 +3,7 @@ import {
   Accessibility,
   AlertTriangle,
   ArrowLeft,
+  CalendarDays,
   ChevronLeft,
   ChevronRight,
   CircleCheck,
@@ -10,6 +11,7 @@ import {
   ImagePlus,
   Lightbulb,
   MapPin,
+  Trash2,
   Users,
   Wrench,
 } from "lucide-react";
@@ -65,6 +67,7 @@ function CourtDetail({ courtId }: CourtDetailProps) {
     checkins,
     currentUserId,
     openReports,
+    events,
 
     isFavorite,
     isFavoriteLoading,
@@ -89,6 +92,7 @@ function CourtDetail({ courtId }: CourtDetailProps) {
     isImageUploading,
     imageUploadError,
     uploadCourtImages,
+    deleteCourtImage,
 
     isLoading,
     error,
@@ -271,6 +275,22 @@ function CourtDetail({ courtId }: CourtDetailProps) {
                     </Button>
                   </div>
                 )}
+                <Button
+                  type="button"
+                  variant="destructive"
+                  className="mx-auto"
+                  onClick={async () => {
+                    const image = images[activeImageIndex] ?? images[0];
+                    if (image && (await deleteCourtImage(image))) {
+                      setActiveImageIndex((current) =>
+                        Math.max(0, Math.min(current, images.length - 2))
+                      );
+                    }
+                  }}
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Bild löschen
+                </Button>
               </DialogContent>
             </Dialog>
           </section>
@@ -365,6 +385,35 @@ function CourtDetail({ courtId }: CourtDetailProps) {
             </Badge>
           </div>
         </section>
+
+        {events.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CalendarDays className="h-5 w-5" />
+                Events an diesem Court
+              </CardTitle>
+            </CardHeader>
+
+            <CardContent className="space-y-3">
+              {events.map((event) => (
+                <Link
+                  key={event.id}
+                  to={`/events/${event.id}`}
+                  className="block rounded-lg border p-4 transition-colors hover:bg-muted/50"
+                >
+                  <p className="font-medium">{event.name}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {new Intl.DateTimeFormat("de-DE").format(
+                      new Date(`${event.event_date}T00:00:00`)
+                    )}{" "}
+                    · {event.event_time.slice(0, 5)} Uhr
+                  </p>
+                </Link>
+              ))}
+            </CardContent>
+          </Card>
+        )}
 
         <Card>
           <CardHeader>
