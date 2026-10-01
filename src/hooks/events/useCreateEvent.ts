@@ -154,16 +154,6 @@ export function useCreateEvent() {
             eventImagesError
           );
 
-          const imagePaths = images
-            .slice(0, MAX_EVENT_IMAGES)
-            .map((image, index) => {
-              const extension = getFileExtension(image);
-
-              return `${user.id}/${event.id}/` + `image-${index + 1}-`;
-            });
-
-          void imagePaths;
-
           throw new Error("Die Event-Bilder konnten nicht gespeichert werden.");
         }
       }

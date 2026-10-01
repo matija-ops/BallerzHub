@@ -46,7 +46,7 @@ function ClubEditPage() {
       const { data, error: supabaseError } = await supabase
         .from("clubs")
         .select("*")
-        .eq("id", clubId)
+        .eq("id", clubId!)
         .single();
 
       if (!isMounted) {

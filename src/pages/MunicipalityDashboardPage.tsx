@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 
 import { supabase } from "@/lib/supabase";
-import type { Tables } from "@/types/supabase";
+import type { Tables } from "@/types/supabase.types";
 
 type Municipality = Tables<"municipalities">;
 type CourtReport = Tables<"court_reports">;
@@ -353,9 +353,9 @@ export default function MunicipalityDashboardPage() {
               />
             </div>
 
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value ?? "")}>
               <SelectTrigger
-                size="lg"
+                size="default"
                 className="h-12 w-full border-white/10 bg-[#182231] text-white"
               >
                 <SelectValue placeholder="Status" />

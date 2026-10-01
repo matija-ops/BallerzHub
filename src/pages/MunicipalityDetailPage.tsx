@@ -442,7 +442,7 @@ function MunicipalityDetailPage() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <Select
                 value={selectedStatus}
-                onValueChange={setSelectedStatus}
+                onValueChange={(value) => setSelectedStatus(value ?? "")}
                 disabled={isSaving}
               >
                 <SelectTrigger className="w-full sm:w-[240px]">

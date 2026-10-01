@@ -61,11 +61,11 @@ function TeamEditPage() {
         supabase
           .from("teams")
           .select("*")
-          .eq("id", teamId)
-          .eq("club_id", clubId)
+          .eq("id", teamId!)
+          .eq("club_id", clubId!)
           .single(),
 
-        supabase.from("clubs").select("*").eq("id", clubId).single(),
+        supabase.from("clubs").select("*").eq("id", clubId!).single(),
 
         supabase.from("leagues").select("*").order("name", {
           ascending: true,

@@ -296,7 +296,7 @@ export default function MunicipalityCourtEditPage() {
           <div className="space-y-2">
             <Label htmlFor="status">Status</Label>
 
-            <Select value={status} onValueChange={setStatus}>
+            <Select value={status} onValueChange={(value) => setStatus(value ?? "")}>
               <SelectTrigger id="status">
                 <SelectValue placeholder="Status auswählen" />
               </SelectTrigger>

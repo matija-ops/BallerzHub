@@ -1,5 +1,4 @@
 import { useAuth } from "@/context/AuthContext";
-import { SocialAuthButtons } from "@/components/auth/SocialAuthButtons";
 import {
   useEffect,
   useRef,
@@ -613,7 +612,7 @@ function RegisterPage() {
                   <div className="space-y-2">
                     <Label>Verein</Label>
 
-                    <Select value={clubId} onValueChange={setClubId}>
+                    <Select value={clubId} onValueChange={(value) => setClubId(value ?? "")}>
                       <SelectTrigger>
                         <SelectValue
                           placeholder={
@@ -639,7 +638,7 @@ function RegisterPage() {
 
                     <Select
                       value={teamId}
-                      onValueChange={setTeamId}
+                      onValueChange={(value) => setTeamId(value ?? "")}
                       disabled={!clubId || isLoadingTeams}
                     >
                       <SelectTrigger>

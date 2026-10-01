@@ -20,9 +20,7 @@ import { useEvents } from "@/hooks/events/useEvents";
 import { useCreateEvent } from "@/hooks/events/useCreateEvent";
 
 import type { EventFormValues } from "@/lib/events/event-validation";
-import type { Tables } from "@/types/supabase.types";
 
-type Event = Tables<"events">;
 
 const initialFilters: EventFilterValues = {
   date: "",

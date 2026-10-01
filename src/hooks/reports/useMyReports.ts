@@ -3,9 +3,10 @@ import { supabase } from "@/lib/supabase";
 import type { Tables } from "@/types/supabase.types";
 
 type CourtReport = Tables<"court_reports">;
+type ReportWithCourt = CourtReport & { court: { name: string } | null };
 
 export function useMyReports() {
-  const [reports, setReports] = useState<CourtReport[]>([]);
+  const [reports, setReports] = useState<ReportWithCourt[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

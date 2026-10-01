@@ -51,7 +51,7 @@ function TeamsPage() {
       ];
 
       const [clubsResult, leaguesResult] = await Promise.all([
-        supabase.from("clubs").select("*").in("id", clubIds),
+        supabase.from("clubs").select("*").in("id", clubIds as string[]),
         leagueIds.length > 0
           ? supabase.from("leagues").select("*").in("id", leagueIds)
           : Promise.resolve({ data: [], error: null }),

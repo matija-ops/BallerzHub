@@ -259,7 +259,7 @@ export function CourtProposalDialog({
 
                 <Select
                   value={type}
-                  onValueChange={setType}
+                  onValueChange={(value) => setType(value ?? "")}
                   disabled={isSubmitting}
                 >
                   <SelectTrigger>

@@ -46,8 +46,8 @@ function TeamDetailPage() {
       const teamResult = await supabase
         .from("teams")
         .select("*")
-        .eq("id", teamId)
-        .eq("club_id", clubId)
+        .eq("id", teamId!)
+        .eq("club_id", clubId!)
         .single();
 
       if (!isMounted) {
@@ -72,7 +72,7 @@ function TeamDetailPage() {
         supabase
           .from("clubs")
           .select("*")
-          .eq("id", loadedTeam.club_id)
+          .eq("id", loadedTeam.club_id ?? "")
           .single(),
 
         supabase

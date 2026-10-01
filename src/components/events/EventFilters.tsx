@@ -106,7 +106,7 @@ function EventFilterFields({
           onValueChange={(value) =>
             onChange({
               ...filters,
-              category: value,
+              category: value ?? "",
             })
           }
         >
@@ -132,7 +132,7 @@ function EventFilterFields({
           onValueChange={(value) =>
             onChange({
               ...filters,
-              ageGroup: value,
+              ageGroup: value ?? "",
             })
           }
         >
@@ -238,7 +238,7 @@ function EventFilters({
               onValueChange={(value) =>
                 onChange({
                   ...filters,
-                  category: value,
+                  category: value ?? "",
                 })
               }
             >
@@ -264,7 +264,7 @@ function EventFilters({
               onValueChange={(value) =>
                 onChange({
                   ...filters,
-                  ageGroup: value,
+                  ageGroup: value ?? "",
                 })
               }
             >

@@ -141,8 +141,8 @@ function GameDetailPage() {
 
   const isFinished = new Date(`${game.game_date}T23:59:59`) < new Date();
 
-  const homeWon = game.home_score > game.away_score;
-  const awayWon = game.away_score > game.home_score;
+  const homeWon = (game.home_score ?? 0) > (game.away_score ?? 0);
+  const awayWon = (game.away_score ?? 0) > (game.home_score ?? 0);
 
   return (
     <main className="container mx-auto max-w-3xl px-4 py-6">

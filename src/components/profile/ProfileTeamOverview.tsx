@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { CalendarDays, Clock3, Trophy } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -66,8 +65,8 @@ function getTeamName(teams: Team[], teamId: string) {
 function getGameResult(game: Game, teamId: string) {
   const isHomeTeam = game.home_team_id === teamId;
 
-  const ownScore = isHomeTeam ? game.home_score : game.away_score;
-  const opponentScore = isHomeTeam ? game.away_score : game.home_score;
+  const ownScore = (isHomeTeam ? game.home_score : game.away_score) ?? 0;
+  const opponentScore = (isHomeTeam ? game.away_score : game.home_score) ?? 0;
 
   if (ownScore > opponentScore) {
     return {

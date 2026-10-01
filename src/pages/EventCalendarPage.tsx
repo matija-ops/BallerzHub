@@ -1,11 +1,6 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/react/daygrid";
-import timeGridPlugin from "@fullcalendar/react/timegrid";
-import listPlugin from "@fullcalendar/react/list";
-
 import "@fullcalendar/react/skeleton.css";
 
 import { Button } from "@/components/ui/button";

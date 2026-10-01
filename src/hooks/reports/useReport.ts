@@ -5,9 +5,13 @@ import type { Tables } from "@/types/supabase.types";
 
 type CourtReport = Tables<"court_reports">;
 type CourtReportImage = Tables<"court_report_images">;
+type ReportWithRelations = CourtReport & {
+  court: { id: string; name: string } | null;
+  municipality: { name: string } | null;
+};
 
 export function useReport(reportId: string) {
-  const [report, setReport] = useState<CourtReport | null>(null);
+  const [report, setReport] = useState<ReportWithRelations | null>(null);
   const [images, setImages] = useState<CourtReportImage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

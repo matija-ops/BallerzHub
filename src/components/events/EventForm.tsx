@@ -374,7 +374,7 @@ function EventForm({ event, isSubmitting, onSubmit }: EventFormProps) {
         <Select
           value={form.watch("category")}
           onValueChange={(value) =>
-            form.setValue("category", value, {
+            form.setValue("category", value ?? "", {
               shouldValidate: true,
               shouldDirty: true,
             })
@@ -475,7 +475,7 @@ function EventForm({ event, isSubmitting, onSubmit }: EventFormProps) {
         <Select
           value={form.watch("court_id")}
           onValueChange={(value) =>
-            form.setValue("court_id", value, {
+            form.setValue("court_id", value ?? "", {
               shouldValidate: true,
               shouldDirty: true,
             })

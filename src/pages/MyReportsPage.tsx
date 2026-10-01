@@ -67,7 +67,7 @@ function MyReportsPage() {
                     </p>
 
                     <p className="mt-1 text-sm">
-                      {new Date(report.created_at).toLocaleDateString("de-DE")}
+                      {new Date(report.created_at ?? "").toLocaleDateString("de-DE")}
                     </p>
                   </div>
 

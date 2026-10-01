@@ -35,12 +35,12 @@ function ClubDetailPage() {
       setError(null);
 
       const [clubResult, teamsResult] = await Promise.all([
-        supabase.from("clubs").select("*").eq("id", clubId).single(),
+        supabase.from("clubs").select("*").eq("id", clubId!).single(),
 
         supabase
           .from("teams")
           .select("*")
-          .eq("club_id", clubId)
+          .eq("club_id", clubId!)
           .order("name", { ascending: true }),
       ]);
 

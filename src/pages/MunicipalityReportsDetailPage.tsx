@@ -151,7 +151,7 @@ function MunicipalityReportsDetailPage() {
           className="h-11 w-full sm:max-w-md"
         />
 
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
+        <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value ?? "")}>
           <SelectTrigger className="h-11 w-full sm:w-[220px]">
             <SelectValue placeholder="Status auswählen" />
           </SelectTrigger>
@@ -165,7 +165,7 @@ function MunicipalityReportsDetailPage() {
           </SelectContent>
         </Select>
 
-        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+        <Select value={categoryFilter} onValueChange={(value) => setCategoryFilter(value ?? "")}>
           <SelectTrigger className="h-11 w-full sm:w-[220px]">
             <SelectValue placeholder="Kategorie auswählen" />
           </SelectTrigger>

@@ -63,7 +63,7 @@ function GameEditPage() {
       const leagueResult = await supabase
         .from("leagues")
         .select("*")
-        .eq("id", leagueId)
+        .eq("id", leagueId!)
         .single();
 
       if (!isMounted) {
@@ -81,7 +81,7 @@ function GameEditPage() {
       const teamsResult = await supabase
         .from("teams")
         .select("*")
-        .eq("league_id", leagueId)
+        .eq("league_id", leagueId!)
         .order("name", { ascending: true });
 
       if (!isMounted) {
@@ -104,7 +104,7 @@ function GameEditPage() {
           .from("games")
           .select("*")
           .eq("id", gameId)
-          .eq("league_id", leagueId)
+          .eq("league_id", leagueId!)
           .single();
 
         if (!isMounted) {

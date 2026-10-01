@@ -713,7 +713,7 @@ async function loadExistingCourts() {
     );
   }
 
-  return (data ?? []) as ExistingCourt[];
+  return (data ?? []) as unknown as ExistingCourt[];
 }
 
 /**

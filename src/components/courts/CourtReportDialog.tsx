@@ -168,7 +168,7 @@ export function CourtReportDialog({
 
               <Select
                 value={category}
-                onValueChange={setCategory}
+                  onValueChange={(value) => setCategory(value ?? "")}
                 disabled={isSubmitting}
               >
                 <SelectTrigger id="court-report-category">

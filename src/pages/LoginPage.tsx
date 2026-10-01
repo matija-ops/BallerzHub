@@ -1,4 +1,3 @@
-import { SocialAuthButtons } from "@/components/auth/SocialAuthButtons";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 

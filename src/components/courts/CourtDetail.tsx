@@ -449,7 +449,7 @@ function CourtDetail({ courtId }: CourtDetailProps) {
 
                     <p className="mt-3 text-xs text-muted-foreground">
                       Gemeldet am{" "}
-                      {new Date(report.created_at).toLocaleDateString("de-DE")}
+                          {new Date(report.created_at ?? "").toLocaleDateString("de-DE")}
                     </p>
                   </Link>
                 ))}

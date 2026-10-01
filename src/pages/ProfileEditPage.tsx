@@ -629,7 +629,7 @@ function ProfileEditPage() {
 
                 <Select
                   value={clubId || "none"}
-                  onValueChange={handleClubChange}
+                  onValueChange={(value) => handleClubChange(value ?? "none")}
                 >
                   <SelectTrigger id="club">
                     <SelectValue placeholder="Verein auswählen">
@@ -655,7 +655,7 @@ function ProfileEditPage() {
                 <Select
                   value={teamId || "none"}
                   onValueChange={(value) =>
-                    setTeamId(value === "none" ? "" : value)
+                    setTeamId(value === "none" ? "" : value ?? "")
                   }
                   disabled={!clubId || isLoadingTeams}
                 >

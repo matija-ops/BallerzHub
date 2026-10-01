@@ -27,7 +27,7 @@ function ReportDetailPage() {
   const { reportId } = useParams<{ reportId: string }>();
   const navigate = useNavigate();
 
-  const { report, images, isLoading, error } = useReport(reportId ?? "");
+  const { report, isLoading, error } = useReport(reportId ?? "");
 
   if (!reportId) {
     return (
@@ -164,7 +164,7 @@ function ReportDetailPage() {
             <div>
               <p className="text-sm text-muted-foreground">Erstellt am</p>
 
-              <p>{new Date(report.created_at).toLocaleString("de-DE")}</p>
+              <p>{new Date(report.created_at ?? "").toLocaleString("de-DE")}</p>
             </div>
 
             <div>
@@ -172,7 +172,7 @@ function ReportDetailPage() {
                 Zuletzt aktualisiert
               </p>
 
-              <p>{new Date(report.updated_at).toLocaleString("de-DE")}</p>
+              <p>{new Date(report.updated_at ?? "").toLocaleString("de-DE")}</p>
             </div>
           </div>
         </CardContent>

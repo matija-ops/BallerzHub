@@ -177,7 +177,7 @@ export default function CourtProposalsAdminPage() {
                       onValueChange={(value) => {
                         setSelectedMunicipalities((current) => ({
                           ...current,
-                          [proposal.id]: value,
+                          [proposal.id]: value ?? "",
                         }));
                       }}
                       disabled={isSubmitting}
