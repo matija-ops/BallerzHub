@@ -10,8 +10,8 @@ import "maplibre-gl/dist/maplibre-gl.css";
 setWorkerUrl(workerUrl);
 
 const MAP_STYLES = {
-  dark: "/map/basketball-dark.json",
-  light: "/map/basketball-light.json",
+  dark: `${import.meta.env.BASE_URL}map/basketball-dark.json`,
+  light: `${import.meta.env.BASE_URL}map/basketball-light.json`,
 } as const;
 
 function getResolvedTheme(): keyof typeof MAP_STYLES {

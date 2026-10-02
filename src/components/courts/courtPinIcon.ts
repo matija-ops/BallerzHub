@@ -4,7 +4,7 @@ export const courtPinIcon = L.divIcon({
   className: "court-pin-icon",
   html: `
     <span class="court-pin-icon__shape" aria-hidden="true"></span>
-    <img class="court-pin-icon__ball" src="/Basketball.png" alt="" />
+    <img class="court-pin-icon__ball" src="${import.meta.env.BASE_URL}Basketball.png" alt="" />
   `,
   iconSize: [42, 54],
   iconAnchor: [21, 54],
