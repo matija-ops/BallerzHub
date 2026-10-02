@@ -49,6 +49,10 @@ function CourtsPage() {
   };
 
   const favoriteCourts = courts.filter((court) => favoriteCourtIds.has(court.id));
+  const listedCourts = [
+    ...favoriteCourts,
+    ...visibleCourts.filter((court) => !favoriteCourtIds.has(court.id)),
+  ];
 
   const handleRequestLocationSelection = () => {
     setIsProposalDialogOpen(false);
@@ -117,7 +121,8 @@ function CourtsPage() {
         </div>
       </div>
       <CourtListSheet
-        courts={visibleCourts.length || favoriteCourts.length ? visibleCourts : favoriteCourts}
+        courts={listedCourts}
+        favoriteCourtIds={favoriteCourtIds}
         selectedCourt={selectedCourt}
         onSelectCourt={handleSelectCourt}
       />

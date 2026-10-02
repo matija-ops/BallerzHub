@@ -33,7 +33,8 @@ export async function getMunicipalityCourts(municipalityId: string) {
   const { data, error } = await supabase
     .from("courts")
     .select("*")
-    .eq("municipality_id", municipalityId)
+    //.eq("municipality_id", municipalityId)
+    .neq("status", "deleted")
     .order("name");
 
   if (error) {
@@ -51,7 +52,7 @@ export async function getMunicipalityCourt(
     .from("courts")
     .select("*")
     .eq("id", courtId)
-    .eq("municipality_id", municipalityId)
+    //.eq("municipality_id", municipalityId)
     .single();
 
   if (error) {
@@ -79,4 +80,21 @@ export async function updateMunicipalityCourt(
   }
 
   return data;
+}
+
+export async function deleteMunicipalityCourt(
+  municipalityId: string,
+  courtId: string
+) {
+  const { error } = await supabase
+    .from("courts")
+    .update({ status: "deleted" })
+    .eq("id", courtId)
+    .eq("municipality_id", municipalityId)
+    .select("id")
+    .single();
+
+  if (error) {
+    throw error;
+  }
 }

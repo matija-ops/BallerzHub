@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ImagePlus, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { supabase } from "@/lib/supabase";
+import { useCourts } from "@/hooks/courts/useCourts";
 
 import {
   eventFormSchema,
@@ -25,7 +25,6 @@ import {
 import type { Tables } from "@/types/supabase.types";
 
 type Event = Tables<"events">;
-type Court = Tables<"courts">;
 
 type EventFormProps = {
   event?: Event;
@@ -97,9 +96,12 @@ const ageGroups = [
 ];
 
 function EventForm({ event, isSubmitting, onSubmit }: EventFormProps) {
-  const [courts, setCourts] = useState<Court[]>([]);
-  const [isLoadingCourts, setIsLoadingCourts] = useState(true);
-  const [courtError, setCourtError] = useState<string | null>(null);
+  const { courts: loadedCourts, isLoading: isLoadingCourts, error } = useCourts();
+  const courts = useMemo(
+    () => [...loadedCourts].sort((a, b) => a.name.localeCompare(b.name, "de")),
+    [loadedCourts]
+  );
+  const courtError = error ? "Die Courts konnten nicht geladen werden." : null;
 
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -134,32 +136,6 @@ function EventForm({ event, isSubmitting, onSubmit }: EventFormProps) {
     .filter(Boolean);
 
   const allAgeGroupsSelected = selectedAgeGroups.length === ageGroups.length;
-
-  useEffect(() => {
-    async function loadCourts() {
-      setIsLoadingCourts(true);
-      setCourtError(null);
-
-      const { data, error } = await supabase
-        .from("courts")
-        .select("*")
-        .order("name", {
-          ascending: true,
-        });
-
-      if (error) {
-        setCourts([]);
-        setCourtError("Die Courts konnten nicht geladen werden.");
-        setIsLoadingCourts(false);
-        return;
-      }
-
-      setCourts(data ?? []);
-      setIsLoadingCourts(false);
-    }
-
-    void loadCourts();
-  }, []);
 
   useEffect(() => {
     if (!event) {
@@ -449,16 +425,16 @@ function EventForm({ event, isSubmitting, onSubmit }: EventFormProps) {
         </div>
       </div>
 
-      {/* Ort */}
+      {/* Ortsbeschreibung */}
 
       <div className="space-y-8">
         <label htmlFor="event-location" className="text-sm font-medium">
-          Ort
+          Ortsbeschreibung
         </label>
 
         <Input
           id="event-location"
-          placeholder="z. B. Stadtpark Court"
+          placeholder="z. B. gegenüber der Luisenstraße, im Westend"
           disabled={isSubmitting}
           {...form.register("location")}
         />
@@ -477,6 +453,7 @@ function EventForm({ event, isSubmitting, onSubmit }: EventFormProps) {
 
         <Select
           value={form.watch("court_id")}
+          items={courts.map((court) => ({ value: court.id, label: court.name }))}
           onValueChange={(value) =>
             form.setValue("court_id", value ?? "", {
               shouldValidate: true,

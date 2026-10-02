@@ -129,7 +129,6 @@ export default function MunicipalityDashboardPage() {
                 )
               `
             )
-            .eq("municipality_id", municipalityId)
             .order("created_at", {
               ascending: false,
             }),
@@ -353,7 +352,10 @@ export default function MunicipalityDashboardPage() {
               />
             </div>
 
-            <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value ?? "")}>
+            <Select
+              value={statusFilter}
+              onValueChange={(value) => setStatusFilter(value ?? "")}
+            >
               <SelectTrigger
                 size="default"
                 className="h-12 w-full border-white/10 bg-[#182231] text-white"
@@ -394,12 +396,22 @@ export default function MunicipalityDashboardPage() {
                     <CardContent className="flex flex-col gap-2.5 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                       <div className="min-w-0 space-y-1">
                         <div className="flex flex-wrap items-center gap-2">
-                          <p className="text-sm font-medium text-white">
-                            {report.court?.name ?? "Unbekannter Court"}
-                          </p>
+                          {report.court ? (
+                            <Link
+                              to={`/courts/${report.court.id}`}
+                              onClick={(event) => event.stopPropagation()}
+                              className="text-sm font-medium text-white hover:underline"
+                            >
+                              {report.court.name}
+                            </Link>
+                          ) : (
+                            <p className="text-sm font-medium text-white">
+                              Unbekannter Court
+                            </p>
+                          )}
 
                           <Badge className="border-red-500/30 bg-red-500 px-2 py-0.5 text-xs text-white hover:bg-red-500">
-                            Open
+                            {getStatusLabel(report.status)}
                           </Badge>
                         </div>
 

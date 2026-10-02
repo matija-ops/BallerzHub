@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Star } from "lucide-react";
 import type { PointerEvent } from "react";
 import type { Tables } from "@/types/supabase.types";
 
@@ -6,6 +7,7 @@ type Court = Tables<"courts">;
 
 interface CourtListSheetProps {
   courts: Court[];
+  favoriteCourtIds: Set<string>;
   selectedCourt: Court | null;
   onSelectCourt: (court: Court) => void;
 }
@@ -33,6 +35,7 @@ function getSheetHeight(state: SheetState) {
 
 export function CourtListSheet({
   courts,
+  favoriteCourtIds,
   selectedCourt,
   onSelectCourt,
 }: CourtListSheetProps) {
@@ -185,7 +188,15 @@ export function CourtListSheet({
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <h3 className="font-semibold">{court.name}</h3>
+                      <h3 className="flex items-center gap-2 font-semibold">
+                        {favoriteCourtIds.has(court.id) && (
+                          <>
+                            <Star className="size-4 shrink-0 fill-yellow-500 text-yellow-500" aria-hidden="true" />
+                            <span className="sr-only">Favorit: </span>
+                          </>
+                        )}
+                        {court.name}
+                      </h3>
 
                       <p className="mt-1 text-sm text-muted-foreground">
                         {court.type} · {court.hoops_count} Körbe

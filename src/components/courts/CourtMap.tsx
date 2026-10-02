@@ -49,13 +49,11 @@ function CourtMarkers({
   );
 
   const updateVisibleCourts = () => {
-    const favorites = courts.filter((court) => favoriteCourtIds.has(court.id));
     const inViewport = map.getZoom() >= COURT_MARKER_MIN_ZOOM
       ? courts.filter((court) => map.getBounds().contains([court.latitude, court.longitude]))
       : [];
-    const visible = Array.from(new Map([...favorites, ...inViewport].map((court) => [court.id, court])).values());
     setAreMarkersVisible(map.getZoom() >= COURT_MARKER_MIN_ZOOM);
-    onVisibleCourtsChange(visible);
+    onVisibleCourtsChange(inViewport);
   };
 
   useMapEvents({ zoomend: updateVisibleCourts, moveend: updateVisibleCourts });

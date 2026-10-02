@@ -104,7 +104,6 @@ function MunicipalityDetailPage() {
           `
           )
           .eq("id", reportId)
-          .eq("municipality_id", municipalityUser.municipality_id)
           .maybeSingle();
 
         if (reportError) {
@@ -192,7 +191,7 @@ function MunicipalityDetailPage() {
           updated_at: new Date().toISOString(),
         })
         .eq("id", reportId)
-        .eq("municipality_id", municipalityUser.municipality_id)
+
         .select(
           `
           *,
@@ -211,6 +210,7 @@ function MunicipalityDetailPage() {
       setReport(updatedReport);
       setSelectedStatus(updatedReport.status);
       setSaveSuccess("Der Status wurde erfolgreich aktualisiert.");
+      navigate("/municipality/dashboard");
     } catch (updateError) {
       console.error("Status konnte nicht aktualisiert werden:", updateError);
 
@@ -269,7 +269,6 @@ function MunicipalityDetailPage() {
           updated_at: new Date().toISOString(),
         })
         .eq("id", reportId)
-        .eq("municipality_id", municipalityUser.municipality_id)
         .select(
           `
           *,
@@ -288,6 +287,7 @@ function MunicipalityDetailPage() {
       setReport(updatedReport);
       setSelectedStatus(updatedReport.status);
       setSaveSuccess("Die Meldung wurde als erledigt markiert.");
+      navigate("/municipality/dashboard");
     } catch (updateError) {
       console.error(
         "Meldung konnte nicht als erledigt markiert werden:",

@@ -461,20 +461,16 @@ function CourtDetail({ courtId }: CourtDetailProps) {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5" />
-              Offene Meldungen
-            </CardTitle>
-          </CardHeader>
+        {openReports.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5" />
+                Offene Meldungen
+              </CardTitle>
+            </CardHeader>
 
-          <CardContent>
-            {openReports.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                Für diesen Court gibt es aktuell keine offenen Meldungen.
-              </p>
-            ) : (
+            <CardContent>
               <div className="space-y-3">
                 {openReports.map((report) => (
                   <Link
@@ -503,9 +499,9 @@ function CourtDetail({ courtId }: CourtDetailProps) {
                   </Link>
                 ))}
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
 
         <CourtActions
           isAuthenticated={Boolean(currentUserId)}

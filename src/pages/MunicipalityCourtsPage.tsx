@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   getCurrentMunicipalityId,
   getMunicipalityCourts,
+  deleteMunicipalityCourt,
 } from "@/lib/municipality";
 
 import type { Database } from "@/types/supabase.types";
@@ -20,6 +21,24 @@ export default function MunicipalityCourtsPage() {
   const [courts, setCourts] = useState<Court[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [deletingCourtId, setDeletingCourtId] = useState<string | null>(null);
+
+  async function handleDeleteCourt(court: Court) {
+    if (!window.confirm(`Möchtest du „${court.name}“ wirklich löschen?`)) return;
+
+    try {
+      setDeletingCourtId(court.id);
+      setError(null);
+      const municipalityId = await getCurrentMunicipalityId();
+      await deleteMunicipalityCourt(municipalityId, court.id);
+      setCourts((current) => current.filter((item) => item.id !== court.id));
+    } catch (deleteError) {
+      console.error(deleteError);
+      setError("Der Court konnte nicht gelöscht werden.");
+    } finally {
+      setDeletingCourtId(null);
+    }
+  }
 
   useEffect(() => {
     async function loadCourts() {
@@ -112,14 +131,18 @@ export default function MunicipalityCourtsPage() {
                 <Badge>{court.status}</Badge>
               </div>
 
-              <Button
-                className="w-full"
-                onClick={() =>
-                  navigate(`/municipality/courts/${court.id}/edit`)
-                }
-              >
-                Bearbeiten
-              </Button>
+              <div className="flex gap-2">
+                <Button className="flex-1" onClick={() => navigate(`/municipality/courts/${court.id}/edit`)}>
+                  Bearbeiten
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => void handleDeleteCourt(court)}
+                  disabled={deletingCourtId !== null}
+                >
+                  {deletingCourtId === court.id ? "Löschen ..." : "Löschen"}
+                </Button>
+              </div>
             </CardContent>
           </Card>
         ))}
