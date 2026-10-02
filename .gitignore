@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 .env
+
+# Large local geodata
+/sport.geojson
