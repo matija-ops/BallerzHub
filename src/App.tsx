@@ -48,7 +48,7 @@ import AuthCallbackPage from "@/pages/AuthCallbackPage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="BallerzHub">
       <LanguageSync />
       <Routes>
         <Route element={<AppLayout />}>
@@ -82,10 +82,7 @@ function App() {
           {/* Ligen */}
           <Route path="/leagues" element={<LeaguesPage />} />
 
-          <Route
-            path="/leagues/easycredit-bbl"
-            element={<LeaguesPage />}
-          />
+          <Route path="/leagues/easycredit-bbl" element={<LeaguesPage />} />
 
           <Route
             path="/leagues/bezirksliga-herren-niers"
