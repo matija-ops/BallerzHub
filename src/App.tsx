@@ -48,7 +48,7 @@ import AuthCallbackPage from "@/pages/AuthCallbackPage";
 
 function App() {
   return (
-    <BrowserRouter basename="BallerzHub">
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <LanguageSync />
       <Routes>
         <Route element={<AppLayout />}>

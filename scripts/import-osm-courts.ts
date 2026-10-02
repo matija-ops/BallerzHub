@@ -1,6 +1,7 @@
 import "dotenv/config";
 import fs from "node:fs";
 import { createClient } from "@supabase/supabase-js";
+import type { Database, TablesInsert } from "../src/types/supabase.types";
 import { chain } from "stream-chain";
 import { parser } from "stream-json";
 import { pick } from "stream-json/filters/Pick.js";

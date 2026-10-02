@@ -13,7 +13,12 @@ export function SocialAuthButtons({ disabled = false }: { disabled?: boolean }) 
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
-        options: { redirectTo: `${window.location.origin}/auth/callback` },
+        options: {
+          redirectTo: new URL(
+            `${import.meta.env.BASE_URL}auth/callback`,
+            window.location.origin,
+          ).href,
+        },
       });
       if (error) throw error;
     } catch {
