@@ -6,8 +6,6 @@ import { parser } from "stream-json";
 import { pick } from "stream-json/filters/Pick.js";
 import { streamArray } from "stream-json/streamers/stream-array.js";
 
-import type { Database, TablesInsert } from "@/types/supabase.types";
-
 // --------------------------------------------------
 // Configuration
 // --------------------------------------------------
