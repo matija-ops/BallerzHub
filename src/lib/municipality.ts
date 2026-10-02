@@ -30,6 +30,7 @@ export async function getCurrentMunicipalityId() {
 }
 
 export async function getMunicipalityCourts(municipalityId: string) {
+  console.log(municipalityId);
   const { data, error } = await supabase
     .from("courts")
     .select("*")
@@ -48,6 +49,7 @@ export async function getMunicipalityCourt(
   municipalityId: string,
   courtId: string
 ) {
+  console.log(municipalityId);
   const { data, error } = await supabase
     .from("courts")
     .select("*")
