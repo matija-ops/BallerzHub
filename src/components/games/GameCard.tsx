@@ -71,7 +71,7 @@ function GameCard({ game, upcoming = false }: GameCardProps) {
           {renderTeam(game.home_team, "left")}
 
           <div className="text-center text-sm font-semibold text-muted-foreground">
-            {upcoming
+            {upcoming && (game.home_score == null || game.away_score == null)
               ? "vs."
               : `${game.home_score ?? "–"} : ${game.away_score ?? "–"}`}
           </div>

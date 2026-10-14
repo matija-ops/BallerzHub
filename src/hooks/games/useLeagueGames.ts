@@ -115,11 +115,17 @@ export function useLeagueGames(
       const today = new Date().toISOString().slice(0, 10);
 
       setUpcomingGames(
-        gamesWithTeams.filter((game) => game.game_date >= today)
+        gamesWithTeams.filter((game) =>
+          game.game_date >= today &&
+          (game.home_score == null || game.away_score == null)
+        )
       );
 
       setPastGames(
-        gamesWithTeams.filter((game) => game.game_date < today).reverse()
+        gamesWithTeams.filter((game) =>
+          game.game_date < today ||
+          (game.home_score != null && game.away_score != null)
+        ).reverse()
       );
 
       setIsLoading(false);
