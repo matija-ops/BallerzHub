@@ -35,8 +35,16 @@ await loadEnvLocal();
 
 const SUPABASE_URL = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL;
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const INTERNAL_LEAGUE_ID = "f88f2e61-9bb0-4e8f-9b5b-e563db6b0cbf";
-const EXTERNAL_LEAGUE_ID = 55802;
+const LEAGUES = {
+  "55802": "f88f2e61-9bb0-4e8f-9b5b-e563db6b0cbf",
+  "54610": "c2a39c5b-ecab-475b-b620-6a4f2da8faba",
+};
+const requestedLeague = process.env.BASKETBALL_LEAGUE_ID ?? "55802";
+if (!Object.hasOwn(LEAGUES, requestedLeague)) {
+  throw new Error("Unbekannte Liga-ID: " + requestedLeague);
+}
+const EXTERNAL_LEAGUE_ID = Number(requestedLeague);
+const INTERNAL_LEAGUE_ID = LEAGUES[requestedLeague];
 const SOURCE = "basketball-bund.net";
 const API_URL = `https://www.basketball-bund.net/rest/competition/actual/id/${EXTERNAL_LEAGUE_ID}`;
 
